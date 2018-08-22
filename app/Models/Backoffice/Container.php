@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection as BannersCollection;
 use Mockery\Exception;
 
-use App\Models\User;
+use App\Models\Backoffice\User;
 use App\Models\Backoffice\ContainerType;
 
 use Illuminate\Http\Request;

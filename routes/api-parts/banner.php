@@ -210,7 +210,7 @@ Route::post('/v1/banner/create', 'API\Banner\BannerController@createBanner');
  *       name="cont_type",
  *       in="query",
  *       type="string",
- *       description="Тип контейнера: горизонтальный или вертикальный",
+ *       description="Тип контейнера: горизонтальный (horizontal) или вертикальный (vertical)",
  *       default="available",
  *       required=true
  *     ),
@@ -218,7 +218,7 @@ Route::post('/v1/banner/create', 'API\Banner\BannerController@createBanner');
  *       name="cont_form",
  *       in="query",
  *       type="string",
- *       description="Форма контейнера: попап или инлайн",
+ *       description="Форма контейнера: попап (popup) или инлайн (inline)",
  *       default="available",
  *       required=true
  *     ),
@@ -244,6 +244,37 @@ Route::post('/v1/banner/create', 'API\Banner\BannerController@createBanner');
 
 
 Route::post('/v1/banner/upload', 'API\Banner\BannerController@uploadBanner');
+
+
+/**
+ * @SWG\Post(
+ *     path="/api/v1/banner/delete-from-filesystem",
+ *     description="Удаляет баннер из файловой системы. Например, такое может использоваться, чтобы удалить загруженный баннер для несозданного объявления",
+ *     operationId="deleteBannerFromFileSystem",
+ *     produces={"application/json"},
+ *     tags={"banner"},
+ *     @SWG\Parameter(
+ *       name="path",
+ *       in="query",
+ *       type="string",
+ *       description="Название файла (с расширением), которое удаляем",
+ *       required=true
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="Состояние удаления: успешно или нет",
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+
+
+
+Route::post('/v1/banner/delete-from-filesystem', 'API\Banner\BannerController@deleteUncreated');
+
 
 
 /**

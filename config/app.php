@@ -165,6 +165,7 @@ return [
         Swap\Laravel\SwapServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Geocoder\Laravel\Providers\GeocoderService::class,
+        Barryvdh\Cors\ServiceProvider::class
     ],
 
     /*

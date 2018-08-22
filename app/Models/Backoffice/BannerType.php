@@ -2,7 +2,16 @@
 
 namespace App\Models\Backoffice;
 
+use App\Components\Budgetor;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\UI\Banner as UIBanner;
+use App\Models\UI\Campaign as UICampaign;
+use App\Models\UI\Container as UIContainer;
+use App\Models\UI\Site as UISite;
+use App\Models\UI\Adv as UIAdv;
+use App\Models\UI\AdvGroup as UIAdvGroup;
+use App\Models\UI\Project as UIProject;
 
 /**
  * Base model of BannerType
@@ -47,6 +56,26 @@ class BannerType extends Model
         }
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * Recalc budgets. Temporary method.
+     */
+    public function recalcBudgets() {
+
+        /**
+         * @TODO Make this only on click, not on show
+         */
+        $budgetor = new Budgetor();
+        $budgetor
+            ->setBanner(UIBanner::where(['id' => $this->banner->id])->first())
+            ->setAdv(UIAdv::where(['real_id' => $this->banner->adv_id])->first())
+            ->setAdvGroup(UIAdvGroup::where(['real_id' => $this->banner->advgroup_id])->first())
+            ->setCampaign(UICampaign::where(['real_id' => $this->banner->campaign_id])->first())
+            ->setProject(UIProject::where(['real_id' => $this->banner->project_id])->first())
+            ->recalc();
+
+        return $this;
     }
 
     /**

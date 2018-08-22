@@ -13,12 +13,13 @@ use Illuminate\Http\Request;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Storage;
 
-use App\Models\User;
+use App\Models\Backoffice\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use App\Http\Requests\EditBanner;
 use App\Http\Requests\CreateBanner;
 use App\Http\Requests\UploadBanner;
+use App\Http\Requests\DeleteUncreatedBannerFile;
 
 use App\Components\Banner as BannerComponent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -33,7 +34,10 @@ class BannerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
             'only' => [
                 'showPreview',
                 'getCode',
@@ -97,7 +101,11 @@ class BannerController extends Controller
      * @throws \App\Exceptions\ApiKeyNotDefinedException
      */
     public function getCode(Request $request) {
-        return (new ApiCounter())->get(auth()->user()->api_key);
+        $user = auth()->user();
+        if ($user === null) {
+            return $this->returnForbidden();
+        }
+        return (new ApiCounter())->get($user->api_key);
     }
 
 
@@ -109,10 +117,10 @@ class BannerController extends Controller
      */
     public function getApi(Request $request) {
         // If API key is correct...
-        if(User::where('api_key', $request->api_key)->get()) {
+        if(User::where('api_key', $request->api_key)->count() > 0) {
             return (new ApiCode())->get();
         } else {
-            throw new AccessDeniedHttpException('Cannot find correct API user');
+            abort(403, 'Cannot find correct API user');
         }
     }
 
@@ -163,13 +171,13 @@ class BannerController extends Controller
         if($request->validated()) {
             $user = auth()->user();
 
-            if(!$user->hasAccess('banners.create')) {
+            if($user->hasAccess('banners.create')) {
                 $newBanner = Banner::create($request->all() + [
                     'user_id' => auth()->user()->id,
                     'adv_id' => $request->adv_id,
                     'title' => $request->title,
                     'description' => $request->description,
-                    'path' => $request->file,
+                    'path' => $request->path,
                     'container_id' => $request->container_id
                 ]);
 
@@ -240,5 +248,19 @@ class BannerController extends Controller
      */
     public function getBanner(Request $request) {
         return BannerResource::make(Banner::find($request->banner));
+    }
+
+    /**
+     * Delete uncreated banner picture
+     *
+     * @param Request $request
+     */
+    public function deleteUncreated(DeleteUncreatedBannerFile $request) {
+        if($request->validated()) {
+            $bannerComponent = new BannerComponent();
+            return [
+                'success' => $bannerComponent->deleteFromFileSystem($request->path)
+            ];
+        }
     }
 }

@@ -32,7 +32,7 @@ class ApiCounter extends Component {
      * @return mixed
      */
     public function get($key) {
-        if(!auth()->user()->api_key) {
+        if(!$key) {
             throw new ApiKeyNotDefinedException('Not exists API key for user' );
         }
 
@@ -40,6 +40,7 @@ class ApiCounter extends Component {
         if(Storage::disk('local')->exists('code/' . $this->version . '/code.js')) {
             $codeFile = (string)Storage::get('code/' . $this->version . '/code.js');
             $codeFile = preg_replace('/\{\{\s*\$apiKey\s*\}\}/', auth()->user()->api_key, $codeFile);
+            $codeFile = preg_replace('/\{\{\s*\$generalHost\s*\}\}/', env('COIN_API_URL'), $codeFile);
             return $codeFile;
         } else {
             echo 'Incorrect code link';

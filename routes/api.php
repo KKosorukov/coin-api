@@ -57,21 +57,25 @@
  *   name="segment",
  *   description="Сегменты (сторона рекламодателя)"
  * )
+ * @SWG\Tag(
+ *   name="geo",
+ *   description="Геолокация (все стороны)"
+ * )
  */
 
 
-use Illuminate\Http\Request;
-
-require_once ('api-parts/auth.php'); // Auth routes
-require_once ('api-parts/container.php'); // Container routes
-require_once ('api-parts/user.php'); // User routes
-require_once ('api-parts/banner.php'); // Banner routes
-require_once ('api-parts/campaign.php'); // Banner routes
-require_once ('api-parts/advgroup.php'); // AdvGroup routes
-require_once ('api-parts/adv.php'); // Adv routes
-require_once ('api-parts/secretquestion.php'); // Adv routes
-require_once ('api-parts/site.php'); // Site routes
-require_once ('api-parts/project.php'); // Project routes
-require_once ('api-parts/segment.php'); // Segment routes
-
-
+require_once 'api-parts/auth.php'; // Auth routes
+require_once 'api-parts/container.php'; // Container routes
+require_once 'api-parts/user.php'; // User routes
+require_once 'api-parts/banner.php'; // Banner routes
+require_once 'api-parts/campaign.php'; // Banner routes
+require_once 'api-parts/advgroup.php'; // AdvGroup routes
+require_once 'api-parts/adv.php'; // Adv routes
+require_once 'api-parts/secretquestion.php'; // Adv routes
+require_once 'api-parts/site.php'; // Site routes
+require_once 'api-parts/project.php'; // Project routes
+require_once 'api-parts/segment.php'; // Segment routes
+require_once 'api-parts/manager.php'; // Manager routes
+require_once 'api-parts/webmaster.php'; // Webmaster routes
+require_once 'api-parts/geo.php'; // Geo routes
+require_once 'api-parts/system.php'; // System routes

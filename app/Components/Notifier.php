@@ -5,7 +5,7 @@ namespace App\Components;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Exceptions\EventNotFoundHandler;
-use App\Models\User;
+use App\Models\Backoffice\User;
 use Illuminate\Support\Facades\Mail;
 
 /**

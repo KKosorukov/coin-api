@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 use App\Models\Backoffice;
 use App\Components\ApiCounter;
-use App\Models\User;
+use App\Models\Backoffice\User;
 
 class AddApiKeyColumn extends Migration
 {

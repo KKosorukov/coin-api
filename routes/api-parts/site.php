@@ -6,7 +6,7 @@
  *     description="Создает сайт для текущего пользователя",
  *     operationId="createSite",
  *     produces={"application/json"},
- *     tags={"site", "create"},
+ *     tags={"site"},
  *     @SWG\Parameter(
  *      name="url",
  *      in="query",
@@ -39,7 +39,7 @@ Route::post('/v1/site/create', 'API\Site\SiteController@create');
  *     description="Изменяет сайт с указанным Id для текущего пользователя",
  *     operationId="updateSite",
  *     produces={"application/json"},
- *     tags={"site", "update"},
+ *     tags={"site", "admin"},
  *     @SWG\Parameter(
  *      name="is_text",
  *      in="query",
@@ -88,7 +88,7 @@ Route::post('/v1/site/{site}/update', 'API\Site\SiteController@update');
  *     description="Меняет статус сайта с Active на Stopped (и наоборот). Не работает при других статусах.",
  *     operationId="toggleSite",
  *     produces={"application/json"},
- *     tags={"site", "toggle"},
+ *     tags={"site"},
  *     @SWG\Response(
  *         response=200,
  *         description="JSON с данными по созданному сайту",
@@ -113,7 +113,7 @@ Route::post('/v1/site/{site}/toggle', 'API\Site\SiteController@toggle');
  *     description="Удаляет сайт.",
  *     operationId="deleteSite",
  *     produces={"application/json"},
- *     tags={"site", "delete"},
+ *     tags={"site"},
  *     @SWG\Response(
  *         response=200,
  *         description="status ok"
@@ -134,10 +134,10 @@ Route::post('/v1/site/{site}/delete', 'API\Site\SiteController@delete');
  *     description="Возвращает список сайтов для текущего юзера.",
  *     operationId="listSite",
  *     produces={"application/json"},
- *     tags={"site", "list"},
+ *     tags={"site"},
  *     @SWG\Response(
  *         response=200,
- *         description="JSON с данными по сайтам",
+ *         description="JSON с данными по созданной группе",
  *         @SWG\Schema(
  *            type="object",
  *            @SWG\Items(ref="#/definitions/SiteResource")
@@ -152,3 +152,37 @@ Route::post('/v1/site/{site}/delete', 'API\Site\SiteController@delete');
  * )
  */
 Route::get('/v1/site/list', 'API\Site\SiteController@list');
+
+/**
+ * @SWG\Post(
+ *     path="/api/v1/site/check",
+ *     description="Проверяет, доступен ли сайт в данный момент.",
+ *     operationId="getSite",
+ *     produces={"application/json"},
+ *     tags={"site"},
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными по сайтам",
+ *         @SWG\Schema(
+ *            type="object",
+ *            @SWG\Items(ref="#/definitions/SiteResource")
+ *         )
+ *     ),
+ *     @SWG\Parameter(
+ *      name="url",
+ *      in="query",
+ *      type="string",
+ *      description="URL-адрес, начинающийся с http или https.",
+ *      default="site",
+ *      required=true
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ *
+ *
+ * )
+ */
+
+Route::post('/v1/site/check', 'API\Site\SiteController@check');

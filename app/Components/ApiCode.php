@@ -35,7 +35,9 @@ class ApiCode extends Component {
      */
     public function get() {
         if(Storage::disk('local')->exists('api/' . $this->version . '/api.js')) {
-            return Storage::get('api/' . $this->version . '/api.js');
+            $apiFile = (string)Storage::get('api/' . $this->version . '/api.js');
+            $apiFile = preg_replace('/\{\{\s*\$generalHost\s*\}\}/', env('COIN_API_URL'), $apiFile);
+            return $apiFile;
         } else {
             echo 'Incorrect code link';
         }

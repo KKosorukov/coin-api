@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Backoffice\Adv;
-use App\Models\User;
+use App\Models\Backoffice\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -60,6 +60,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      description="Статус",
  *      enum={"0 - включен","1 - выключен"},
  *      default="available",
+ *   ),
+ *   @SWG\Property(
+ *      property="budget",
+ *      type="integer",
+ *      description="Бюджет общий",
+ *      default="available"
+ *   ),
+ *   @SWG\Property(
+ *      property="daily_budget",
+ *      type="integer",
+ *      description="Бюджет суточный",
+ *      default="available"
  *   )
  * )
  */
@@ -74,7 +86,9 @@ class ProjectResource extends JsonResource
             'user' => $this->user,
             'date_from' => $this->date_from,
             'date_to' => $this->date_to,
-            'status' => $this->status
+            'status' => $this->status,
+            'budget' => $this->budget,
+            'daily_budget' => $this->daily_budget
         ];
     }
 }

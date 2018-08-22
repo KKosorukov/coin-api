@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Backoffice\Adv;
-use App\Models\User;
+use App\Models\Backoffice\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -33,6 +33,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      description="Пользователь-хозяин",
  *      default="available",
  *      @SWG\Schema(ref="#/definitions/UserResource")
+ *   ),
+ *   @SWG\Property(
+ *      property="project",
+ *      type="object",
+ *      description="Проект, которому принадлежит кампания",
+ *      default="available",
+ *      @SWG\Schema(ref="#/definitions/ProjectResource")
  *   ),
  *   @SWG\Property(
  *      property="name",
@@ -89,6 +96,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      default="available"
  *   ),
  *   @SWG\Property(
+ *      property="budget",
+ *      type="integer",
+ *      description="Общий бюджет",
+ *      default="available"
+ *   ),
+ *   @SWG\Property(
  *      property="comment",
  *      type="string",
  *      description="Комментарий",
@@ -110,7 +123,9 @@ class CampaignResource extends JsonResource
             'status_global' => $this->status_global,
             'status_moderation' => $this->status_moderation,
             'daily_budget' => $this->daily_budget,
-            'comment' => $this->comment
+            'budget' => $this->budget,
+            'comment' => $this->comment,
+            'project' => $this->project
         ];
     }
 }

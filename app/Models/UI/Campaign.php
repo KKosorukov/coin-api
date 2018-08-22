@@ -8,7 +8,17 @@ class Campaign extends Model
 {
     protected $connection = 'mysql-ui';
 
-    protected $fillable = ['real_id', 'daily_budget', 'date_from', 'date_to'];
+    protected $fillable = [
+        'real_id',
+        'date_from',
+        'date_to',
+        'daily_budget',
+        'budget',
+        'current_daily_budget',
+        'current_budget',
+        'status',
+        'showcase_status'
+    ];
     protected $hidden = ['id'];
 
     public $timestamps = false;

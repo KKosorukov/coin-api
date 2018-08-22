@@ -1,3 +1,3 @@
-<div class="inline" style="width: {{ $container->width }}px; height: {{ $container->height }}px">
+<div class="inline popup">
     {!! $content !!}
 </div>

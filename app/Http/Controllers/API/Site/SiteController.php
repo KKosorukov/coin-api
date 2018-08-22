@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API\Site;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateSite;
-use App\Http\Requests\EditSite;
+use App\Http\Requests;
 use App\Http\Resources\SiteResource;
 use App\Models\Backoffice\Site;
 use Illuminate\Http\JsonResponse;
@@ -13,21 +12,33 @@ class SiteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ]);
     }
 
-    public function create(CreateSite $request)
+    /**
+     * @param Requests\CreateSite $request
+     * @return SiteResource|JsonResponse
+     */
+    public function create(Requests\CreateSite $request)
     {
         if ($request->validated()) {
             $user = auth()->user();
 
-            if (/*@todo add role checking*/ true) {
-                $siteModel = Site::create($request->all());
-                $siteModel->user_id = $user->id;
-                return SiteResource::make($siteModel);
-            } else {
+            if ($user === null) {
                 return $this->returnForbidden();
             }
+
+            $siteModel = new Site();
+            $siteModel->fill($request->all());
+            $siteModel->setAttribute('user_id', $user->id);
+            $siteModel->setAttribute('status', Site::STATUS_MODERATION);
+            $siteModel->setAttribute('url', $siteModel->normalizeUrl($request->get('url')));
+            $siteModel->save();
+
+            return SiteResource::make($siteModel);
         }
     }
 
@@ -39,12 +50,12 @@ class SiteController extends Controller
     {
         $user = auth()->user();
 
-        $siteModel = Site::where([
-            'id' => $site,
-            'user_id' => $user->id
-        ])->firstOrFail();
+        if (/*@todo add role checking*/ $user !== null) {
+            $siteModel = Site::where([
+                'id' => $site,
+                'user_id' => $user->id
+            ])->firstOrFail();
 
-        if (/*@todo add role checking*/ true) {
             /**
              * @var SiteResource $answer
              */
@@ -68,12 +79,13 @@ class SiteController extends Controller
     {
         $user = auth()->user();
 
-        $siteModel = Site::where([
-            'id' => $site,
-            'user_id' => $user->id
-        ])->firstOrFail();
+        if ($user !== null) {
 
-        if (/*@todo add role checking*/ true) {
+            $siteModel = Site::where([
+                'id' => $site,
+                'user_id' => $user->id
+            ])->firstOrFail();
+
             switch ($siteModel->status) {
                 case Site::STATUS_ACTIVE:
                     $siteModel->status = Site::STATUS_STOPPED;
@@ -93,28 +105,30 @@ class SiteController extends Controller
 
     /**
      * @param integer $site
-     * @param EditSite $request
+     * @param Requests\EditSite $request
      * @return JsonResponse|array
      */
-    public function update(int $site, EditSite $request)
+    public function update(int $site, Requests\EditSite $request)
     {
         if ($request->validated()) {
             $user = auth()->user();
 
-            /**
-             * @var Site
-             */
-            $siteModel = Site::find([
-                'id' => $site,
-                'user_id' => $user->id
-            ])->firstOrFail();
+            if ($user !== null) {
+                /**
+                 * @var Site
+                 */
+                $siteModel = Site::find([
+                    'id' => $site,
+                    'user_id' => $user->id
+                ])->firstOrFail();
 
-            if (/*@todo add role checking*/ true) {
                 $siteModel->update($request->all());
+
                 return [
                     'success' => (bool)$siteModel,
                     'data' => SiteResource::make($siteModel)
                 ];
+
             } else {
                 return $this->returnForbidden();
             }
@@ -124,11 +138,35 @@ class SiteController extends Controller
     /**
      * @return array
      */
-    public function list()
+    public function list() : array
     {
         $user = auth()->user();
 
-        $siteModel = Site::find(['user_id' => $user->id])->all();
-        return $siteModel;
+        if ($user !== null) {
+            $siteModel = Site::find(['user_id' => $user->id]);
+            return [
+                'data'  => SiteResource::collection($siteModel),
+                'total' => \count($siteModel)
+            ];
+        }
+    }
+
+    /**
+     * @param Requests\CheckSite $request
+     * @return array
+     */
+    public function check(Requests\CheckSite $request)
+    {
+        $user = auth()->user();
+
+        if ($user !== null && $request->validated() /** @todo rbac checking */) {
+            /**@todo это явно можно сделать более красивым способом*/
+            $normalized_url = (new Site())->normalizeUrl($request->get('url'));
+            $file_headers = @get_headers($normalized_url);
+            $result = $file_headers !== false && $file_headers[0] !== 'HTTP/1.1 404 Not Found';
+            return [
+                'success' => $result
+            ];
+        }
     }
 }

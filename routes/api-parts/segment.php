@@ -40,6 +40,15 @@
  *       default="available",
  *       required=true
  *     ),
+ *     @SWG\Parameter(
+ *       name="is_private",
+ *       in="query",
+ *       type="integer",
+ *       description="Отображается ли в общей таблице доступных сегментов или нет",
+ *       enum={"0 - не отображается","1 - отображается"},
+ *       default="available",
+ *       required=true
+ *     ),
  *     @SWG\Response(
  *         response=200,
  *         description="JSON с данными по созданному сегменту",
@@ -146,3 +155,140 @@ Route::post('/v1/segment/{segment}/delete', 'API\Segment\SegmentController@delet
  * )
  */
 Route::get('/v1/segment/list', 'API\Segment\SegmentController@getAllSegments');
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/segment/continents",
+ *     description="Возвращает список контитентов для сегментов",
+ *     operationId="listCountries",
+ *     produces={"application/json"},
+ *     tags={"segment", "list"},
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными по континентам",
+ *         @SWG\Schema(
+ *            type="object",
+ *            @SWG\Items(ref="#/definitions/ContinentResource")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/segment/continents', 'API\Segment\SegmentController@getContinentsList');
+
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/segment/countries/{continent}",
+ *     description="Возвращает список стран для сегментов",
+ *     operationId="listCountries",
+ *     produces={"application/json"},
+ *     tags={"segment", "list"},
+ *     @SWG\Parameter(
+ *       name="continent",
+ *       in="query",
+ *       type="string",
+ *       description="Код континента (например, AS)",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными по странам",
+ *         @SWG\Schema(
+ *            type="object",
+ *            @SWG\Items(ref="#/definitions/CountryResource")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/segment/countries/{continent}', 'API\Segment\SegmentController@getCountriesList');
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/segment/areas/{country}",
+ *     description="Возвращает список областей для сегментов",
+ *     operationId="listAreas",
+ *     produces={"application/json"},
+ *     tags={"segment", "list"},
+ *     @SWG\Parameter(
+ *       name="country",
+ *       in="query",
+ *       type="string",
+ *       description="Код страны (например, RU)",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными"
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/segment/areas/{country}', 'API\Segment\SegmentController@getAreasList');
+
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/segment/cities/{country}/{area}",
+ *     description="Возвращает список населённых пунктов для страны и области",
+ *     operationId="listCities",
+ *     produces={"application/json"},
+ *     tags={"segment", "list"},
+ *     @SWG\Parameter(
+ *       name="country",
+ *       in="query",
+ *       type="string",
+ *       description="Код страны (например, RU)",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="area",
+ *       in="query",
+ *       type="string",
+ *       description="Код области (опционален)",
+ *       default="available"
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными"
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/segment/cities/{country}/{area}', 'API\Segment\SegmentController@getCitiesList');
+
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/segment/languages",
+ *     description="Возвращает список языков для таргетирования",
+ *     operationId="listOfLanguages",
+ *     produces={"application/json"},
+ *     tags={"segment", "list"},
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными по языкам"
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/segment/languages', 'API\Segment\SegmentController@getLanguagesList');

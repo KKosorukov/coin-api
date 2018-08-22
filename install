@@ -1,0 +1,38 @@
+#!/bin/sh
+
+echo "Welcome to installation of coin-api!\r\n"
+
+# Run migrations...
+
+php artisan migrate --force
+
+# Run first time auction. The beginning of everything :)
+
+echo "Roll first auction....";
+php artisan auction:roll true
+
+# Create geobase
+
+echo "Creating geobase.....";
+
+php artisan geobase:create
+
+echo "Geobase created\r\n";
+
+# Write out current crontab
+crontab -l > ./crontab_list
+
+# Echo new cron into cron file
+
+echo "*/5 * * * * php artisan auction:roll true" >> crontab_list
+echo "*/5 * * * * php artisan auction:suck" >> crontab_list
+echo "*/5 * * * * php artisan auction:update-statuses" >> crontab_list
+
+#Install new cron file
+
+crontab crontab_list
+rm crontab_list
+
+echo "Crontab rules added.\r\n";
+
+echo "Success!";

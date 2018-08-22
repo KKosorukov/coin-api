@@ -35,7 +35,9 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getTestStaticPage() {
-        return view('face/test', []);
+        return view('face/test', [
+            'generalHost' => env('COIN_API_URL')
+        ]);
     }
 
     /**

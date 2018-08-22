@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Backoffice\Bill;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
@@ -105,9 +104,13 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
  * )
  */
 
-
 class UserResource extends JsonResource
 {
+    /**
+     * @var int
+     */
+    protected $id;
+
     /**
      * Transform the resource into an array.
      *
@@ -128,7 +131,7 @@ class UserResource extends JsonResource
             'telegram_id' => (string) $this->telegram_id,
             'email' => (string) $this->email,
             'bill' => $this->bill,
-            'roles' => Sentinel::findById($this->id)->roles,
+            'roles' => $this->roles, /** @todo что-то не так с этим методом... Его нет? */
             'api_key' => $this->api_key
         ];
     }

@@ -23,10 +23,10 @@ class CreateSite extends ApiFormRequest
     public function messages()
     {
         return [
-            'url.required'      => 'Введите URL сайта.',
-            'is_text.boolean'   => 'Передайте значения `false` или `true`!',
-            'is_banner.boolean' => 'Передайте значения `false` или `true`!',
-            'is_video.boolean'  => 'Передайте значения `false` или `true`!',
+            'url.required'       => 'Введите URL сайта.',
+            'is_text.boolean'    => 'Передайте значения `false` или `true`!',
+            'is_banner.boolean'  => 'Передайте значения `false` или `true`!',
+            'is_video.boolean'   => 'Передайте значения `false` или `true`!',
         ];
     }
 }

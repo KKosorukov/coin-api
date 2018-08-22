@@ -8,101 +8,42 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @SWG\Definition(
  *   type="object",
  *   @SWG\Xml(
- *     name="User"
- *   ),
- *   @SWG\Property(
- *      property="id",
- *      type="integer",
- *      description="Первичный ключ",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="permissions",
- *      type="string",
- *      description="Права доступа, поставленные на пользователя (не на группу, которой он принадлежит)",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="last_login",
- *      type="string",
- *      description="Время последнего входа",
- *      default="available",
- *      format="date-time"
- *   ),
- *    @SWG\Property(
- *      property="first_name",
- *      type="boolean",
- *      description="Имя",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="last_name",
- *      type="string",
- *      description="Фамилия",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="created_at",
- *      type="string",
- *      description="Время создания",
- *      default="available",
- *      format="date-time"
- *   ),
- *   @SWG\Property(
- *      property="updated_at",
- *      type="string",
- *      description="Время последнего изменения",
- *      default="available",
- *      format="date-time"
- *   ),
- *   @SWG\Property(
- *      property="skype_id",
- *      type="string",
- *      description="Skype ID",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="telegram_id",
- *      type="string",
- *      description="Telegram ID",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="email",
- *      type="string",
- *      description="Email",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="bill",
- *      type="string",
- *      description="Характеристики по счёту в разных валютах",
- *      default="available",
- *      @SWG\Schema(ref="#/definitions/BillResource")
- *   ),
- *   @SWG\Property(
- *      property="roles",
- *      type="string",
- *      description="Роли пользователя",
- *      default="available"
- *   ),
- *   @SWG\Property(
- *      property="api_key",
- *      type="string",
- *      description="Ключ API",
- *      default="available"
- *   ),
+ *     name="Site"
+ *   )
  * )
  */
 
 class SiteResource extends JsonResource
 {
     /**
+     * Transform the resource into an array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $result = parent::toArray($request);
+        $result['is_banner'] = $this->getBooleanFromBase($result, 'is_banner');
+        $result['is_text']   = $this->getBooleanFromBase($result, 'is_text');
+        $result['is_video']  = $this->getBooleanFromBase($result, 'is_video');
+        $result['earnings']  = 100000;
+        $result['clicks']    = 500;
+        $result['views']     = 100000;
+        $result['ctr']       = 1000;
+        $result['cpc']       = 2000;
+        $result['traffic']   = 1000;
+        $result['is_robot']  = 2000;
+
+        return $result;
+    }
+
+    /**
+     * @param $result
+     * @return bool
+     */
+    private function getBooleanFromBase($result, $key): bool
+    {
+        return array_key_exists($key, $result) ? (bool)$result[$key] : false;
     }
 }

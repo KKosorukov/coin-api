@@ -137,9 +137,65 @@ use App\Models\Backoffice\Banner;
  *      type="string",
  *      description="Модераторский комментарий",
  *      default="available",
+ *   ),
+ *   @SWG\Property(
+ *      property="sets",
+ *      type="string",
+ *      description="
+ *          Возможные типы объявлений:
+ *          1. Popup:
+ *          {
+ *              alias : 'adv-popup',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 2,
+ *              container_type_id : null,
+ *          }
+ *          2. Static banner:
+ *          {
+ *              alias : 'adv-static',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 1,
+ *              container_type_id : null
+ *          }
+ *          3. Dinamic banner:
+ *          {
+ *              alias : 'adv-dynamic',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          4. Text banner:
+ *          {
+ *              alias : 'adv-text',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          5. Carousel:
+ *          {
+ *              alias : 'adv-carousel',
+ *              banner_form_id : 2,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          6. LinkContext:
+ *          {
+ *              alias : 'adv-linkcontext'
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *       ",
  *   )
  * )
  */
+
 
 class AdvResource extends JsonResource
 {
@@ -163,7 +219,8 @@ class AdvResource extends JsonResource
             'title' => $this->title,
             'text' => $this->text,
             'moderator_comment' => $this->moderator_comment,
-            'daily_budget' => $this->daily_budget
+            'daily_budget' => $this->daily_budget,
+            'sets' => $this->sets
         ];
     }
 }

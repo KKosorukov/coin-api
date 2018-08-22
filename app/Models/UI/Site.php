@@ -25,6 +25,8 @@ class Site extends Model
 
     public $timestamps = false;
 
+    protected $table = 'sites';
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

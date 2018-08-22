@@ -2,11 +2,7 @@
 
 namespace App\Models\Backoffice;
 
-use App\Http\Resources\AdvResource;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\Backoffice\Adv;
-use App\Models\User;
 
 use App\Components\RandomGenerator;
 
@@ -16,7 +12,13 @@ class Banner extends Model
 
     const DUMMY_PATH = '/banners/dummy/';
 
-    protected $fillable = ['adv_id', 'title', 'description', 'path', 'user_id'];
+    protected $fillable = [
+        'adv_id',
+        'title',
+        'description',
+        'path',
+        'user_id'
+    ];
     protected $hidden = ['id'];
     protected $typeId; // It's a banner typeId
     protected $randomGenerator; // This is random generator

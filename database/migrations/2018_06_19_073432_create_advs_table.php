@@ -20,7 +20,6 @@ class CreateAdvsTable extends Migration
             $table->increments('id');
             $table->text('name');
             $table->integer('is_dummy');
-            $table->unsignedInteger('adv_type_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('campaign_id');
             $table->unsignedInteger('adv_group_id');
@@ -44,20 +43,16 @@ class CreateAdvsTable extends Migration
      * Create first dummy advertise
      */
     public function createDummyAdvertise() {
-        $defaultType = AdvType::where('is_default_type', 1)->first();
-        if(!$defaultType) {
-            throw new Exception(404);
-        }
-
         for($i = 0; $i < 2; $i++) {
-            $adv = \App\Models\Backoffice\Adv::create([
+            $adv = new \App\Models\Backoffice\Adv;
+            $adv->fill([
                 'name' => 'Default advertise '.$i,
                 'is_dummy' => 1,
-                'adv_type_id' => $defaultType->id,
                 'campaign_id' => 1,
                 'adv_group_id' => 1,
                 'user_id' => 1
             ]);
+            $adv->save();
         }
     }
 }

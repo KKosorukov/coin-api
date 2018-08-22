@@ -92,7 +92,7 @@ class BannerForm extends Model
         $renderedBannersNotGlued = [];
 
         for($i = 0; $i < $num; $i++) {
-            $rendered = (new $randomBannerType($this->container, $this->banners[$i]))->getRenderedView();
+            $rendered = (new $randomBannerType($this->container, $this->banners[$i]))->recalcBudgets()->getRenderedView();
 
             $renderedBanners .= $rendered;
             $renderedBannersNotGlued[] = $rendered;

@@ -8,7 +8,7 @@ class Segment extends Model
 {
     protected $connection = 'mysql-backoffice';
 
-    protected $fillable = ['name', 'comment', 'type', 'params'];
+    protected $fillable = ['name', 'comment', 'type', 'params', 'is_private'];
 
     protected $hidden = ['id'];
 

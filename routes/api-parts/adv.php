@@ -68,6 +68,38 @@ Route::get('/v1/user/{user}/adv', 'API\Adv\AdvController@getAllAdvs');
 
 /**
  * @SWG\Get(
+ *     path="/v1/adv/advgroup/{advgroup}",
+ *     description="Возвращает все объявления для конкретного юзера для конкретной группы",
+ *     operationId="listOfAdvsInAdvGroup",
+ *     produces={"application/json"},
+ *     tags={"user", "adv"},
+ *      @SWG\Parameter(
+ *         name="advgroup",
+ *         in="path",
+ *         description="ID группы, для которой хотим получить список",
+ *         required=true,
+ *         type="integer"
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON-коллекция объявлений",
+ *         @SWG\Schema(
+ *              type="object",
+ *              @SWG\Items(ref="#/definitions/AdvResource")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+
+Route::get('/v1/adv/advgroup/{advgroup}', 'API\Adv\AdvController@getAllAdvsByGroupId');
+
+
+/**
+ * @SWG\Get(
  *     path="/api/v1/user/{user}/adv/{adv}",
  *     description="Возвращает конкретное объявление для конкретного юзера",
  *     operationId="advItem",
@@ -136,6 +168,13 @@ Route::get('/v1/user/{user}/adv/{adv}', 'API\Adv\AdvController@getAdv');
  *       required=true
  *     ),
  *     @SWG\Parameter(
+ *       name="adv_group_id",
+ *       type="integer",
+ *       in="query",
+ *       description="ID группы объявлений",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
  *       name="comment",
  *       type="string",
  *       in="query",
@@ -183,6 +222,119 @@ Route::get('/v1/user/{user}/adv/{adv}', 'API\Adv\AdvController@getAdv');
  *       type="string",
  *       in="query",
  *       description="Модераторский комментарий",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_1",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 1",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_1",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 1",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_2",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 2",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_2",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 2",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_3",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 3",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_3",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 3",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_4",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 4",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_4",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 4",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="sets",
+ *       type="string",
+ *       in="query",
+ *       description="
+ *          Возможные типы объявлений:
+ *          1. Popup:
+ *          {
+ *              alias : 'adv-popup',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 2,
+ *              container_type_id : null,
+ *          }
+ *          2. Static banner:
+ *          {
+ *              alias : 'adv-static',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 1,
+ *              container_type_id : null
+ *          }
+ *          3. Dinamic banner:
+ *          {
+ *              alias : 'adv-dynamic',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          4. Text banner:
+ *          {
+ *              alias : 'adv-text',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          5. Carousel:
+ *          {
+ *              alias : 'adv-carousel',
+ *              banner_form_id : 2,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          6. LinkContext:
+ *          {
+ *              alias : 'adv-linkcontext'
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *       ",
  *       default="available"
  *     ),
  *     @SWG\Response(
@@ -247,6 +399,13 @@ Route::post('/v1/adv/create', 'API\Adv\AdvController@createAdv');
  *       default="available"
  *     ),
  *     @SWG\Parameter(
+ *       name="adv_group_id",
+ *       type="integer",
+ *       in="query",
+ *       description="ID группы объявлений",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
  *       name="comment",
  *       type="string",
  *       in="query",
@@ -293,6 +452,119 @@ Route::post('/v1/adv/create', 'API\Adv\AdvController@createAdv');
  *       type="string",
  *       in="query",
  *       description="Модераторский комментарий",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_1",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 1",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_1",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 1",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_2",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 2",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_2",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 2",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_3",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 3",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_3",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 3",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_4",
+ *       type="string",
+ *       in="query",
+ *       description="Дополнительный URL для объявления 4",
+ *       default="available"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="additional_adv_url_desc_4",
+ *       type="string",
+ *       in="query",
+ *       description="Описание для дополнительного URLа для объявления 4",
+ *       default="available"
+ *     ),
+ *     *     @SWG\Parameter(
+ *       name="sets",
+ *       type="string",
+ *       in="query",
+ *       description="
+ *          Возможные типы объявлений:
+ *          1. Popup:
+ *          {
+ *              alias : 'adv-popup',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 2,
+ *              container_type_id : null,
+ *          }
+ *          2. Static banner:
+ *          {
+ *              alias : 'adv-static',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : 1,
+ *              container_type_id : null
+ *          }
+ *          3. Dinamic banner:
+ *          {
+ *              alias : 'adv-dynamic',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          4. Text banner:
+ *          {
+ *              alias : 'adv-text',
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          5. Carousel:
+ *          {
+ *              alias : 'adv-carousel',
+ *              banner_form_id : 2,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *          6. LinkContext:
+ *          {
+ *              alias : 'adv-linkcontext'
+ *              banner_form_id : null,
+ *              banner_type_id : null,
+ *              container_form_id : null,
+ *              container_type_id : null
+ *          }
+ *       ",
  *       default="available"
  *     ),
  *     @SWG\Response(
@@ -350,3 +622,83 @@ Route::post('/v1/user/{user}/adv/{adv}/update', 'API\Adv\AdvController@updateAdv
  */
 
 Route::post('/v1/user/{user}/adv/{adv}/delete', 'API\Adv\AdvController@deleteAdv');
+
+
+
+/**
+ * @SWG\Post(
+ *     path="/api/v1/adv/preview",
+ *     description="Возвращает превью объявления по параметрам контейнера",
+ *     operationId="getAdvPreview",
+ *     produces={"application/json"},
+ *     tags={"adv"},
+ *     @SWG\Parameter(
+ *       name="container_type",
+ *       in="query",
+ *       type="integer",
+ *       description="ID типа контейнера",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="container_form",
+ *       in="query",
+ *       type="integer",
+ *       description="ID формы контейнера",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="banner_type",
+ *       in="query",
+ *       type="integer",
+ *       description="ID типа баннера",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="banner_form",
+ *       in="query",
+ *       type="integer",
+ *       description="ID формы баннера",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="Превью в виде кода страницы, которую необходимо запустить на исполнение (например, в iframe)",
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::post('/v1/adv/preview', 'API\Adv\AdvController@getPreview');
+
+/**
+ * @SWG\Get(
+ *     path="/api/v1/adv/types",
+ *     description="Возвращает все возможные типы объявлений",
+ *     operationId="advTypes",
+ *     produces={"application/json"},
+ *     tags={"adv"},
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON-коллекция объявлений",
+ *         @SWG\Schema(
+ *              type="object",
+ *              @SWG\Items(ref="#/definitions/AdvResource")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+Route::get('/v1/adv/types', 'API\Adv\AdvTypeController@getAllAdvTypes');
+
+
+Route::post('/v1/adv/clear', 'API\Adv\AdvTypeController@clear');
+

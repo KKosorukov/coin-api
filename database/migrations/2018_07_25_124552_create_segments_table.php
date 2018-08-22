@@ -17,7 +17,7 @@ class CreateSegmentsTable extends Migration
     {
         Schema::connection('mysql-backoffice')->create('segments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->enum('type', [
                 0, // Include
                 1, // Exclude
@@ -36,12 +36,12 @@ class CreateSegmentsTable extends Migration
         $segments = [
             [
                 'comment' => 'First segment comment',
-                'params' => '{"city" : "Moscow", "browser" : "IE", "time_begin" : "19:00", "time_end" : "21:00"}',
+                'params' => '{"name":"First segment","type":"0","params":{"geo":[{"continent_code":"AS","country_code":"RU","area_code":"TVE","city":"1028"}], "time":[{"time_begin":"9:00","time_end":"15:00"},{"time_begin":"18:00","time_end":"19:00"}],"language":["en-US","ru-RU"]}}',
                 'name' => 'First segment'
             ],
             [
                 'comment' => 'Second segment comment',
-                'params' => '{"city" : "Saint Petersburg", "browser" : "Firefox", "time_begin" : "12:00", "time_end" : "16:00"}',
+                'params' => '{"name":"Second segment","type":"0","params":{"geo":[{"continent_code":"AS","country_code":"RU","area_code":"SAK","city":"5543"}], "time":[{"time_begin":"2:00","time_end":"5:00"},{"time_begin":"12:00","time_end":"14:00"}],"language":["en-US","ru-RU"]}}',
                 'name' => 'Second segment'
             ]
         ];

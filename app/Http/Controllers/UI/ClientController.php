@@ -27,12 +27,6 @@ class ClientController extends Controller
                 'getClientAdv'
             ]
         ]);
-
-        $this->middleware('shows-limit', [
-            'only' => [
-                'getClientAdv'
-            ]
-        ]);
     }
 
     /**
@@ -45,6 +39,7 @@ class ClientController extends Controller
 
             // Put +1 show into UI-database
             $this->_putShow($request);
+
 
             return [
                 'success' => true,

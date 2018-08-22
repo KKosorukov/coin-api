@@ -3,7 +3,7 @@
 namespace App\Models\Backoffice;
 
 use App\Models\Backoffice\AdvType;
-use App\Models\User;
+use App\Models\Backoffice\User;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,6 @@ class Adv extends Model
     protected $fillable = [
         'name',
         'is_dummy',
-        'adv_type_id',
         'user_id',
         'campaign_id',
         'adv_group_id',
@@ -27,22 +26,43 @@ class Adv extends Model
         'num_clicks',
         'url',
         'title',
-        'text',
+        'short_description',
+        'long_description',
         'moderator_comment',
-        'daily_budget'
+        'budget',
+        'daily_budget',
+        'additional_adv_url_1',
+        'additional_adv_url_2',
+        'additional_adv_url_3',
+        'additional_adv_url_4',
+        'additional_adv_url_desc_1',
+        'additional_adv_url_desc_2',
+        'additional_adv_url_desc_3',
+        'additional_adv_url_desc_4',
+        'current_budget',
+        'current_daily_budget',
+        'showcase_status'
+    ];
+
+    protected $guarded = [
+
     ];
 
     protected $hidden = [
         'id'
     ];
 
+    public function banners() {
+        return $this->hasMany(Banner::class, 'adv_id', 'id');
+    }
+
     /**
-     * Has only one advType
+     * Has many advTypes
      *
      * @return mixed
      */
     public function advType() {
-        return $this->hasOne(AdvType::class, 'id', 'adv_type_id');
+        return $this->belongsToMany('App\Models\Backoffice\AdvType', 'advs_types-advs', 'adv_id', 'adv_type_id');
     }
 
     /**
@@ -79,6 +99,42 @@ class Adv extends Model
         ])->get();
 
         return $banners;
+    }
+
+
+    /**
+     * Has many bannerForms
+     */
+    public function bannerForms() {
+
+    }
+
+    /**
+     * Has many bannerTypes
+     */
+    public function bannerTypes() {
+
+    }
+
+    /**
+     * Has many containerForms
+     */
+    public function containerForms() {
+
+    }
+
+    /**
+     * Has many containerTypes
+     */
+    public function containerTypes() {
+
+    }
+
+    /**
+     * Has many sets
+     */
+    public function sets() {
+        return $this->hasMany(AdvSet::class, 'adv_id', 'id');
     }
 
 }

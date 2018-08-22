@@ -2,63 +2,47 @@
 
 namespace App\Http\Controllers\API\Adv;
 
+use App\Http\Resources\AdvTypeResource;
+use App\Models\Backoffice\Adv;
+use App\Models\Backoffice\AdvGroup;
+use App\Models\Backoffice\AdvType;
+use App\Models\Backoffice\Campaign;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AdvTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
+            'only' => [
+                'getAllAdvTypes'
+            ]
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the adv types
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function store(Request $request)
+    public function getAllAdvTypes()
     {
-        //
+        return AdvTypeResource::collection(AdvType::all());
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @TODO !!!
+     * @TODO Временный метод. Не забыть выпилить его!!!
      */
-    public function show($id)
+    public function clear()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        Adv::query()->truncate();
+        AdvGroup::query()->truncate();
+        Campaign::query()->truncate();
+        return json_encode(['ok']);
     }
 }

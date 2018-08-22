@@ -110,7 +110,6 @@ class Banner {
 
     this.advBlocks = this.getAdvBlocks(selector);
     this.host = location.protocol + '//' + location.host;
-    this.advIframes = [];
     this.bindEvents();
   }
 

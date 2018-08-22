@@ -23,7 +23,10 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
             'only' => [
                 'getAllProjects',
                 'createProject',

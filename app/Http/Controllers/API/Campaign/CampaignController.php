@@ -20,7 +20,10 @@ class CampaignController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
             'only' => [
                 'getAllCampaigns',
                 'createCampaign',
@@ -53,8 +56,12 @@ class CampaignController extends Controller
             $user = auth()->user();
 
             if($user->hasAccess('campaigns.create')) {
+                $params = $request->all();
+                if(!isset($params['budget'])) {
+                    $params['budget'] = 0;
+                }
 
-                $newCampaign = Campaign::create($request->all() + [
+                $newCampaign = Campaign::create($params + [
                     'user_id' => $user->id
                 ]);
 

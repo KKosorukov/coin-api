@@ -27,7 +27,10 @@ class ContainerController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ],  [
             'only' => [
                 'getContainers',
                 'getContainerTypes',

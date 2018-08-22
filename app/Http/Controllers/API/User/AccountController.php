@@ -24,7 +24,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Cartalyst\Sentinel\Laravel\Facades\Reminder;
-use App\Models\User;
+use App\Models\Backoffice\User;
 use Illuminate\Validation\ValidationException;
 use App\Components\Notifier;
 use Validator;
@@ -48,7 +48,10 @@ class AccountController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
             'only' => [
                 'updateProfile',
                 'sendActivationEmailAgain'

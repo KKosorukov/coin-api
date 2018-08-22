@@ -129,6 +129,22 @@ Route::get('/v1/campaign/{campaign}', 'API\Campaign\CampaignController@getCampai
  *       default="available",
  *       required=true
  *     ),
+ *     @SWG\Parameter(
+ *       name="budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет кампании суммарный",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="project_id",
+ *       in="query",
+ *       type="integer",
+ *       description="Проект, которому принадлежит данная кампания",
+ *       default="available",
+ *       required=true
+ *     ),
  *     @SWG\Response(
  *         response=200,
  *         description="JSON с данными по кампании",
@@ -207,6 +223,30 @@ Route::post('/v1/campaign/{campaign}/delete', 'API\Campaign\CampaignController@d
  *       in="query",
  *       type="string",
  *       description="Дата окончания кампании (в формате ГГГГ-ММ-ДД ЧЧ:ММ:CC)",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="daily_budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Дневной бюджет кампании",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет кампании суммарный",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="project_id",
+ *       in="query",
+ *       type="integer",
+ *       description="Проект, которому принадлежит данная кампания",
  *       default="available",
  *       required=true
  *     ),

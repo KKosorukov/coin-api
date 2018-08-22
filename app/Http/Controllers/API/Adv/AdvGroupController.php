@@ -15,14 +15,19 @@ use App\Http\Requests\CreateAdvGroup;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\DB;
 
 class AdvGroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware([
+            'auth:api',
+            \Barryvdh\Cors\HandleCors::class,
+        ], [
             'only' => [
                 'getAllAdvGroups',
+                'getAdvGroupsByCampaignId',
                 'createAdvGroup',
                 'getAdvGroup',
                 'updateAdvGroup',
@@ -42,6 +47,16 @@ class AdvGroupController extends Controller
     }
 
     /**
+     * Displays adv groups by campaign ID
+     *
+     * @param $campaign
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getAdvGroupsByCampaignId($campaign) {
+        return AdvGroupResource::collection(AdvGroup::where('campaign_id', $campaign)->get());
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param CreateAdvGroup $request
@@ -50,10 +65,26 @@ class AdvGroupController extends Controller
     public function createAdvGroup(CreateAdvGroup $request)
     {
         if($request->validated()) {
+            // Dirty hack of: segments param is exists, but "required" is only filled array
+
             if(auth()->user()->hasAccess('advgroups.create')) {
                 $newAdvGroup = AdvGroup::create($request->all() + [
-                    'user_id' => auth()->user()->id
+                    'user_id' => auth()->user()->id,
+                    'current_budget' => $request->input('budget'),
+                    'current_daily_budget' => $request->input('daily_budget')
                 ]);
+
+                // Create link between advgroup and segment
+                if($newAdvGroup) {
+                    foreach ($request->segments as $segmentId) {
+                        DB::connection('mysql-backoffice')->table('segments-adv_groups')->insert([
+                            'segment_id' => $segmentId,
+                            'adv_group_id' => $newAdvGroup->id
+                        ]);
+                    }
+                } else {
+                    abort(404);
+                }
 
                 return AdvGroupResource::make($newAdvGroup);
             } else {

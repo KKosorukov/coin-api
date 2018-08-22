@@ -49,6 +49,25 @@ use App\Models\Backoffice\Adv;
  *      default="available",
  *   ),
  *   @SWG\Property(
+ *      property="budget",
+ *      type="integer",
+ *      description="Бюджет общий",
+ *      default="available"
+ *   ),
+ *   @SWG\Property(
+ *      property="daily_budget",
+ *      type="integer",
+ *      description="Бюджет суточный",
+ *      default="available"
+ *   ),
+ *   @SWG\Property(
+ *      property="click_price",
+ *      type="numeric",
+ *      description="Цена за клик",
+ *      default="available",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
  *      property="created_at",
  *      type="string",
  *      description="Время создания",
@@ -76,7 +95,10 @@ class AdvGroupResource extends JsonResource
             'updated_at' => (string) $this->updated_at,
             'advs' => $this->advs,
             'status' => $this->status,
-            'segments' => $this->segments
+            'segments' => $this->segments,
+            'budget' => $this->budget,
+            'daily_budget' => $this->daily_budget,
+            'click_price' => $this->click_price
         ];
     }
 }

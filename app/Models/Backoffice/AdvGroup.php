@@ -3,15 +3,33 @@
 namespace App\Models\Backoffice;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\Backoffice\User;
 
 class AdvGroup extends Model
 {
 
     protected $connection = 'mysql-backoffice';
 
+    protected $fillable = [
+        'name',
+        'user_id',
+        'campaign_id',
+        'status',
+        'budget',
+        'daily_budget',
+        'current_daily_budget',
+        'current_budget',
+        'click_price',
+        'showcase_status'
+    ];
 
-    protected $fillable = ['name', 'user_id', 'campaign_id', 'status'];
+    protected $guarded = [
+
+    ];
+
+    protected $hidden = [
+        'id'
+    ];
 
     /**
      * Has only one user

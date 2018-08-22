@@ -32,12 +32,19 @@ class RandomGenerator extends Component {
     /**
      * Get random number
      *
-     * @param $min
-     * @param $max
      * @return int
      */
     public function getRandomNumber() {
         return rand($this->min, $this->max);
+    }
+
+    /**
+     * Get random float
+     *
+     * @return float|int
+     */
+    public function getRandomFloat() {
+        return mt_rand() / mt_getrandmax();
     }
 
     /**

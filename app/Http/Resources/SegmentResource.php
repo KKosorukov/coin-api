@@ -49,6 +49,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      enum={"0 - включение","1 - исключение"},
  *      default="available"
  *   ),
+ *   @SWG\Property(
+ *      property="is_private",
+ *      type="string",
+ *      description="Отображается ли в общей таблице доступных сегментов или нет",
+ *      enum={"0 - не отображается","1 - отображается"},
+ *      default="available"
+ *   ),
  * )
  */
 
@@ -61,7 +68,10 @@ class SegmentResource extends JsonResource
     public function toArray($request)
     {
         return parent::toArray($request) + [
-            'advgroups' => $this->advgroups
+            'advgroups' => $this->advgroups,
+            'is_private' => $this->is_private,
+            'type' => $this->type,
+            'id' => $this->id
         ];
     }
 }

@@ -144,4 +144,17 @@ class Banner extends Component {
             'fileName' => $safeName
         ];
     }
+
+    /**
+     * Delete banner from file system
+     *
+     * @param $path
+     */
+    public function deleteFromFileSystem($path) {
+        if(Storage::disk('public')->exists('/banners/'.$path)) {
+            return Storage::disk('public')->delete('/banners/'.$path);
+        }
+
+        return false;
+    }
 }

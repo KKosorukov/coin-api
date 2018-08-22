@@ -39,6 +39,6 @@ class RollBannersAuction extends Command
      */
     public function handle()
     {
-       return (new Auctioner('simpleRandom'))->run($this->argument('clear'));
+       return (new Auctioner('v1'))->run($this->argument('clear'));
     }
 }

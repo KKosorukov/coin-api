@@ -16,6 +16,22 @@
  *       required=true
  *     ),
  *     @SWG\Parameter(
+ *       name="budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет проекта суммарный",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="daily_budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет проекта суточный",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
  *       name="status",
  *       in="query",
  *       type="integer",
@@ -54,6 +70,22 @@ Route::post('/v1/project/create', 'API\Project\ProjectController@createProject')
  *       in="query",
  *       type="string",
  *       description="Название проекта",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет проекта суммарный",
+ *       default="available",
+ *       required=true
+ *     ),
+ *     @SWG\Parameter(
+ *       name="daily_budget",
+ *       in="query",
+ *       type="integer",
+ *       description="Бюджет проекта суточный",
  *       default="available",
  *       required=true
  *     ),
