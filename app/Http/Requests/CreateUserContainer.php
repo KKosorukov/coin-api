@@ -31,23 +31,23 @@ class CreateUserContainer extends ApiFormRequest
     public function messages()
     {
         return [
-            'width.required' => 'Обязательно укажите ширину контейнера!',
-            'width.integer' => 'Ширина контейнера должна быть целым числом!',
-            'width.min_width' => 'Ширина контейнера не может быть меньше, чем :min_width пикселей!',
-            'width.max_width' => 'Ширина контейнера не может быть больше, чем :max_width пикселей!',
-            'height.required' => 'Обязательно укажите высоту контейнера!',
-            'height.integer' => 'Высота контейнера должна быть целым числом!',
-            'height.min_height' => 'Высота контейнера не может быть меньше, чем :min_height пикселей!',
-            'height.max_height' => 'Высота контейнера не может быть больше, чем :max_height пикселей!',
-            'type.required' => 'Выберите тип контейнера!',
-            'type.exists' => 'Такой тип контейнера не существует!',
-            'displayed.required' => 'Укажите имя для отображения этого контейнера!',
-            'displayed.string' => 'Имя контейнера должно быть обязательно строкой!',
-            'displayed.max' => 'Имя контейнера не можем превышать 50 символов!',
-            'num_banners.integer' => 'Количество баннеров для контейнера должно быть целым числом!',
-            'num_banners.required' => 'Введите количество баннеров для контейнера!',
-            'num_banners.max' => 'Максимальное количество баннеров в контейнере не может превышать 3!',
-            'num_banners.min' => 'Минмальное количество баннеров в контейнере не может быть меньше 1!'
+            'width.required' => trans('adventa-container.width.required'),
+            'width.integer' =>  trans('adventa-container.width.integer'),
+            'width.min_width' =>  trans('adventa-container.width.min_width'),
+            'width.max_width' =>  trans('adventa-container.width.max_width'),
+            'height.required' =>  trans('adventa-container.height.required'),
+            'height.integer' =>  trans('adventa-container.height.integer'),
+            'height.min_height' =>  trans('adventa-container.height.min_height'),
+            'height.max_height' =>  trans('adventa-container.height.max_height'),
+            'type.required' =>  trans('adventa-container.type.required'),
+            'type.exists' =>  trans('adventa-container.type.exists'),
+            'displayed.required' =>  trans('adventa-container.displayed.required'),
+            'displayed.string' =>  trans('adventa-container.displayed.string'),
+            'displayed.max' =>  trans('adventa-container.displayed.max'),
+            'num_banners.integer' =>  trans('adventa-container.num_banners.integer'),
+            'num_banners.required' =>  trans('adventa-container.num_banners.required'),
+            'num_banners.max' =>  trans('adventa-container.num_banners.max'),
+            'num_banners.min' =>  trans('adventa-container.num_banners.min')
         ];
     }
 }

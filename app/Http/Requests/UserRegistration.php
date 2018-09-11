@@ -17,7 +17,7 @@ class UserRegistration extends ApiFormRequest
     {
         return [
             'first_name' => 'required|min:1|max:50',
-            'last_name' => 'required|max:50',
+            'last_name' => 'string|max:50',
             'email' => 'required|email|max:50|unique:users,email',
             'skype_id' => 'nullable|max:50',
             'telegram_id' => 'nullable|max:30',
@@ -25,7 +25,8 @@ class UserRegistration extends ApiFormRequest
             'password_repeat' => 'required|same:password',
             'secret_question_id' => 'required|integer|secret_question',
             'secret_question_answer' => 'required|min:5|max:255',
-            'role' => 'required|string|role_exists|non_admin'
+            'role' => 'required|string|role_exists|non_admin',
+            'timezone_id' => 'required|exists:timezones,id'
         ];
     }
 
@@ -38,30 +39,32 @@ class UserRegistration extends ApiFormRequest
     public function messages()
     {
         return [
-            'first_name.required' => 'Имя должно быть введено!',
-            'first_name.max' => 'Имя не может быть больше 50 символов!',
-            'first_name.min' => 'Имя должно состоять хотя бы из одной буквы!',
-            'last_name.required' => 'Фамилия должна быть введена!',
-            'last_name.max' => 'Фамилия не может быть больше 50 символов!',
-            'last_name.min' => 'Фамилия должна состоять хотя бы из одной буквы!',
-            'email.required' => 'Почта должна быть введена!',
-            'email.max'  => 'Почта не может превышать 50 символов!',
-            'email.email' => 'Формат почты некорректный.',
-            'email.unique' => 'Такой пользователь уже существует! Возможно, Вам требуется сбросить пароль, чтобы войти?',
-            'password.required' => 'Введите пароль!',
-            'password.max' => 'Пароль не может превышать 30 символов!',
-            'password_repeat.same' => 'Пароль и повтор пароля должны совпадать!',
-            'password_repeat.required' => 'Повтор пароля должен быть введён!',
-            'secret_question_id.required' => 'Выберите секретный вопрос!',
-            'secret_question_id.integer' => 'Секретный вопрос: неверный формат!',
-            'secret_question_id.secret_question' => 'Такого секретного вопроса не существует!',
-            'secret_question_answer.required' => 'Ответ на секретный вопрос должен быть дан!',
-            'secret_question_answer.min' => 'Минимальное количество для ответа на секретный вопрос - 5!',
-            'role.required' => 'Роль пользователя должна быть определена!',
-            'role.role_exists' => 'Извините, такой роли не существует!',
-            'role.non_admin' => 'Эта роль недоступна для присвоения новому пользователю.',
-            'skype_id.max' => 'Skype ID не может быть больше, чем 30 символов!',
-            'telegram_id.max' => 'Telegram ID не может быть больше, чем 30 символов!'
+            'first_name.required' => trans('adventa-account.first_name.required'),
+            'first_name.max' => trans('adventa-account.first_name.max'),
+            'first_name.min' => trans('adventa-account.first_name.min'),
+            'last_name.required' => trans('adventa-account.last_name.required'),
+            'last_name.max' => trans('adventa-account.last_name.max'),
+            'last_name.min' => trans('adventa-account.last_name.min'),
+            'email.required' => trans('adventa-account.email.required'),
+            'email.max'  => trans('adventa-account.email.max'),
+            'email.email' => trans('adventa-account.email.email'),
+            'email.unique' => trans('adventa-account.email.unique'),
+            'password.required' => trans('adventa-account.password.required'),
+            'password.max' => trans('adventa-account.password.max'),
+            'password_repeat.same' => trans('adventa-account.password_repeat.same'),
+            'password_repeat.required' => trans('adventa-account.password_repeat.required'),
+            'secret_question_id.required' => trans('adventa-account.secret_question_id.required'),
+            'secret_question_id.integer' => trans('adventa-account.secret_question_id.integer'),
+            'secret_question_id.secret_question' => trans('adventa-account.secret_question_id.secret_question'),
+            'secret_question_answer.required' => trans('adventa-account.secret_question_answer.required'),
+            'secret_question_answer.min' => trans('adventa-account.secret_question_answer.min'),
+            'role.required' => trans('adventa-account.role.required'),
+            'role.role_exists' => trans('adventa-account.role.role_exists'),
+            'role.non_admin' => trans('adventa-account.role.non_admin'),
+            'skype_id.max' => trans('adventa-account.skype_id.max'),
+            'telegram_id.max' => trans('adventa-account.telegram_id.max'),
+            'timezone_id.required' => 'Укажите часовой пояс!',
+            'timezone_id.exists' => 'Часового пояса с таким ID не существует!'
         ];
     }
 }

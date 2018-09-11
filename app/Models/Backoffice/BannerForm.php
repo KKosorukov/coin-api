@@ -10,6 +10,8 @@ use App\Models\Backoffice\BannerTypes\Image;
 use App\Models\Backoffice\BannerTypes\ImageText;
 use App\Models\Backoffice\BannerTypes\Text;
 
+use Illuminate\Support\Facades\Crypt;
+
 /**
  * Base model of BannerForm
  *
@@ -92,7 +94,9 @@ class BannerForm extends Model
         $renderedBannersNotGlued = [];
 
         for($i = 0; $i < $num; $i++) {
-            $rendered = (new $randomBannerType($this->container, $this->banners[$i]))->recalcBudgets()->getRenderedView();
+            $rendered = (new $randomBannerType($this->container, $this->banners[$i]))->recalcBudgets()->getRenderedView([
+                'bannerId' => $this->_getCryptedBannerId($this->banners[$i])
+            ]);
 
             $renderedBanners .= $rendered;
             $renderedBannersNotGlued[] = $rendered;
@@ -122,5 +126,12 @@ class BannerForm extends Model
         $randType = (new RandomGenerator(0, count($bannerTypes) - 1))->getRandomNumber();
 
         return $bannerTypes[$randType];
+    }
+
+    /**
+     * Get crypted banner id
+     */
+    private function _getCryptedBannerId($banner) {
+        return Crypt::encryptString($banner->campaign_id.'|'.$banner->advgroup_id.'|'.$banner->adv_id.'|'.$banner->banner_id.'|'.$banner->project_id.'|'.$banner->id);
     }
 }

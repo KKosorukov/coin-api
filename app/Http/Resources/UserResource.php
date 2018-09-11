@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Backoffice\Project;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
@@ -101,6 +102,11 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
  *      description="Ключ API",
  *      default="available"
  *   ),
+ *   @SWG\Property(
+ *      property="timezone",
+ *      type="string",
+ *      description="Часовой пояс",
+ *   ),
  * )
  */
 
@@ -109,7 +115,7 @@ class UserResource extends JsonResource
     /**
      * @var int
      */
-    protected $id;
+    // protected $id; @TODO Fields are not extend...?
 
     /**
      * Transform the resource into an array.
@@ -131,8 +137,12 @@ class UserResource extends JsonResource
             'telegram_id' => (string) $this->telegram_id,
             'email' => (string) $this->email,
             'bill' => $this->bill,
-            'roles' => $this->roles, /** @todo что-то не так с этим методом... Его нет? */
-            'api_key' => $this->api_key
+            'roles' => $this->roles,
+            'api_key' => $this->api_key,
+            'timezone' => $this->timezone,
+            'avatar' => $this->avatar,
+            'matomo' => $this->matomo,
+            'project_id' => Project::where('user_id', $this->id)->first()['id']
         ];
     }
 }

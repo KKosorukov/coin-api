@@ -42,7 +42,9 @@ class Banner extends Model
         'banner_form_id',
         'banner_type_id',
         'container_form_id',
-        'container_type_id'
+        'container_type_id',
+        'adv_short_desc',
+        'adv_long_desc'
     ];
     protected $hidden = ['id'];
 

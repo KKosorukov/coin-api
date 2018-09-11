@@ -33,6 +33,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      type="string",
  *      description="Код контитента, которому принадлежит страна",
  *      default="available"
+ *   ),
+ *   @SWG\Property(
+ *      property="population",
+ *      type="string",
+ *      description="Популяция (в целых человеках)"
  *   )
  * )
  */
@@ -51,7 +56,8 @@ class CountryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'continent_code' => $this->continent_code,
-            'country_code' => $this->country_code
+            'country_code' => $this->country_code,
+            'population' => $this->population
         ];
     }
 }

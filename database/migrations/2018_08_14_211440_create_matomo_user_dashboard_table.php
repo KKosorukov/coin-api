@@ -18,7 +18,7 @@ class CreateMatomoUserDashboardTable extends Migration {
 			$table->integer('iddashboard');
 			$table->string('name', 100)->nullable();
 			$table->text('layout', 65535);
-			$table->primary(['login','iddashboard']);
+			$table->primary(['login', 'iddashboard']);
 		});
 	}
 

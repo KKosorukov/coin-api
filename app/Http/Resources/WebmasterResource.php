@@ -18,7 +18,7 @@ class WebmasterResource extends UserResource
     /**
      * @var Site[]
      */
-    private $sites;
+//    private $sites;
 
     /**
      * Transform the resource into an array.

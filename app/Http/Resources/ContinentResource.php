@@ -22,11 +22,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      description="Название контитента",
  *      default="available"
  *   ),
- *    @SWG\Property(
+ *   @SWG\Property(
  *      property="continent_code",
  *      type="string",
  *      description="Код контитента",
  *      default="available"
+ *   ),
+ *   @SWG\Property(
+ *      property="population",
+ *      type="string",
+ *      description="Популяция (в целых человеках)"
  *   )
  * )
  */
@@ -44,7 +49,8 @@ class ContinentResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'continent_code' => $this->continent_code
+            'continent_code' => $this->continent_code,
+            'population' => $this->population
         ];
     }
 }

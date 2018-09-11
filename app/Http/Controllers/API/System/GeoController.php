@@ -47,13 +47,24 @@ class GeoController extends Controller
     public function getJsonInfo() {
         if(!Storage::disk('public')->exists($this->geofileName)) {
 
+            $continents = Continent::all();
             $regions = Area::all();
             $countries = Country::all();
 
             $answer = [
-                'regions' => [],
-                'countries' => []
+                'continents' => [],
+                'countries' => [],
+            //    'regions' => []
             ];
+
+            foreach ($continents as $continent) {
+                $answer['continents'][] = [
+                    'code' => $continent->continent_code,
+                    'name' => $continent->name,
+                    'aud_percent' => 0,
+                    'aud_absolute' => 0
+                ];
+            }
 
             foreach ($regions as $region) {
                 $answer['regions'][] = [

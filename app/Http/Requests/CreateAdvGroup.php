@@ -33,25 +33,25 @@ class CreateAdvGroup extends ApiFormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Введите имя!',
-            'name.max' => 'Имя не может превышать 255 символов!',
-            'campaign_id.required' => 'Обязательно укажите кампанию!',
-            'campaign_id.exists' => 'Кампании, которую вы указали, не существует!',
-            'campaign_id.owner_of_campaign' => 'Вы не являетесь хозяином данной кампании!',
-            'status.required' => 'Обязательно укажите статус!',
-            'status.in' => 'Статус может принимать одно из двух значений: 0 (включён) или 1 (выключен)!',
-            'daily_budget.numeric' => 'Значение должно быть числом!',
-            'daily_budget.min' => 'Значение должно быть больше 0!',
-            'budget.numeric' => 'Значение должно быть числом!',
-            'budget.min' => 'Значение должно быть больше нуля!',
-            'daily_budget.campaign_daily_budget_limit' => 'Дневной лимит группы объявлений не может превышать дневной лимит кампании!',
-            'budget.campaign_budget_limit' => 'Бюджет группы объявлений не может превышать бюджет кампании!',
-            'click_price.required' => 'Указание цены за клик обязательно!',
-            'click_price.min' => 'Цена за клик не может быть меньше нуля!',
-            'click_price.max_click_price' => 'Цена за клик не может превышать бюджет создаваемой или редактируемой группы!',
-            'segments.present' => 'Передайте параметр сегмента! Это должен быть минимум пустой массив [] !',
-            'segments.array' => 'Тип передаваемого параметра должен быть массивом!',
-            'segments.segments_exists' => 'Не все указанные сегменты существуют!'
+            'name.required' => trans('adventa-advgroup.name.required'),
+            'name.max' => trans('adventa-advgroup.name.max'),
+            'campaign_id.required' => trans('adventa-advgroup.campaign_id.required'),
+            'campaign_id.exists' => trans('adventa-advgroup.campaign_id.exists'),
+            'campaign_id.owner_of_campaign' => trans('adventa-advgroup.campaign_id.owner_of_campaign'),
+            'status.required' => trans('adventa-advgroup.status.required'),
+            'status.in' => trans('adventa-advgroup.status.in'),
+            'daily_budget.numeric' => trans('adventa-advgroup.daily_budget.numeric'),
+            'daily_budget.min' => trans('adventa-advgroup.daily_budget.min'),
+            'budget.numeric' => trans('adventa-advgroup.budget.numeric'),
+            'budget.min' => trans('adventa-advgroup.budget.min'),
+            'daily_budget.campaign_daily_budget_limit' => trans('adventa-advgroup.daily_budget.campaign_daily_budget_limit'),
+            'budget.campaign_budget_limit' => trans('adventa-advgroup.budget.campaign_budget_limit'),
+            'click_price.required' => trans('adventa-advgroup.click_price.required'),
+            'click_price.min' => trans('adventa-advgroup.click_price.min'),
+            'click_price.max_click_price' => trans('adventa-advgroup.click_price.max_click_price'),
+            'segments.array' => trans('adventa-advgroup.segments.array'),
+            'segments.segments_exists' => trans('adventa-advgroup.segments.segments_exists'),
+            'segments.present' => trans('adventa-advgroup.segments.present')
         ];
     }
 }

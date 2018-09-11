@@ -31,8 +31,8 @@ class CheckSite extends ApiFormRequest
     public function messages() : array
     {
         return [
-            'url.required'     => 'Требуется передать валидный и активный URL сайта.',
-            'url.active_url'   => 'Требуется передать валидный и активный URL сайта.',
+            'url.required'     => trans('adventa-checksite.url.required'),
+            'url.active_url'   => trans('adventa-checksite.url.active_url')
         ];
     }
 }

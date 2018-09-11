@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Face;
 
+use App\Components\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,29 @@ class IndexController extends Controller
      */
     public function getTestStaticPage() {
         return view('face/test', [
-            'generalHost' => env('COIN_API_URL')
+            'generalHost' => env('COIN_API_URL'),
+            'matomoHost' => env('MATOMO_HOST')
+        ]);
+    }
+
+
+    /**
+     * Get test static page with Highcharts
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getHighChartsTestPage() {
+        $dashboard = new Dashboard();
+
+        return view('face/test-highcharts', [
+            'chartEarnings' => $dashboard->getEarningsChart(),
+            'chartTraffic' => $dashboard->getTrafficChart(),
+            'chartSourcetraffic' => $dashboard->getSourcetrafficChart(),
+            'chartBannerviews' => $dashboard->getBannerviewChart(),
+            'chartClicks' => $dashboard->getClicksChart(),
+            'chartIsrobot' => $dashboard->getIsRobotChart(),
+            'chartCtr' => $dashboard->getCtrChart(),
+            'chartAuditionscope' => $dashboard->getAuditionscopeChart(),
+            'chartClickprice' => $dashboard->getClickpriceChart()
         ]);
     }
 
@@ -46,6 +69,6 @@ class IndexController extends Controller
      * @param Request $request
      */
     public function activateAccount(Request $request) {
-        return redirect('/api/v1/user/'.$request->user.'/activate/'.$request->token);
+        return redirect('/api/v1/user/' . $request->user . '/activate/' . $request->token);
     }
 }

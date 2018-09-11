@@ -135,8 +135,16 @@ class Banner extends Component {
             'jpeg' => 'jpg',
             'png' => 'png',
             'svg' => 'svg',
-            'gif' => 'gif'
+            'gif' => 'gif',
+            'jpg' => 'jpg'
         ];
+
+        if(!isset($extensions[$format])) {
+            return [
+                'status' => false,
+                'fileName' => null
+            ];
+        }
 
         $safeName = md5(time().microtime().auth()->user()->id).'.'.$extensions[$format];
         return [

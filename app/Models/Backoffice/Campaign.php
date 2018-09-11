@@ -34,7 +34,7 @@ class Campaign extends Model
     ];
 
     protected $guarded = [
-
+        'created_at'
     ];
 
 
@@ -63,6 +63,18 @@ class Campaign extends Model
      */
     public function project() {
         return $this->hasOne(Project::class, 'id', 'project_id');
+    }
+
+    public function getScope() {
+        return null;
+    }
+
+    public function getCtr() {
+        return $this->num_shows > 0 ? $this->num_clicks / $this->num_shows : 0;
+    }
+
+    public function getCpc() {
+        return $this->num_clicks > 0 ? $this->expenses / $this->num_clicks : 0;
     }
 
 }

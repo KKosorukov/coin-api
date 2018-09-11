@@ -29,8 +29,8 @@ class ClientRequest extends ApiFormRequest
     public function messages()
     {
         return [
-            'cont_type.exists' => 'Неверное указание типа контейнера! Выберите vertical или horizontal',
-            'cont_form.exists' => 'Неверное указание формы представления контейнера! Должен быть inline или popup!'
+            'cont_type.exists' => trans('adventa-clientrequest.cont_type.exists'),
+            'cont_form.exists' => trans('adventa-clientrequest.cont_form.exists')
         ];
     }
 }

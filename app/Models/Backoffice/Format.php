@@ -4,7 +4,6 @@ namespace App\Models\Backoffice;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 abstract class Format extends Model
 {
     protected $connection = 'mysql-backoffice';
@@ -21,5 +20,4 @@ abstract class Format extends Model
     public static function who() {
         return __CLASS__;
     }
-
 }

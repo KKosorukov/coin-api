@@ -30,8 +30,8 @@ Route::get('/v1/manager/list', 'API\User\ManagerController@list');
 
 /**
  * @SWG\Post(
- *   path="/api/v1/manager/{id}/allow",
- *   description="Одобрить все сайты вебмастера.",
+ *   path="/api/v1/manager/allow",
+ *   description="Одобрить указанные сайты.",
  *   operationId="managerList",
  *   produces={"application/json"},
  *   tags={"manager", "admin"},
@@ -53,12 +53,12 @@ Route::get('/v1/manager/list', 'API\User\ManagerController@list');
  * )
  */
 
-Route::post('/v1/manager/{id}/allow', 'API\User\ManagerController@allow');
+Route::post('/v1/manager/allow', 'API\User\ManagerController@allow');
 
 /**
  * @SWG\Post(
- *   path="/api/v1/manager/{id}/reject",
- *   description="Отказать всем сайтам вебмастера.",
+ *   path="/api/v1/manager/reject",
+ *   description="Отказать по указанным сайтам.",
  *   operationId="managerList",
  *   produces={"application/json"},
  *   tags={"manager", "admin"},
@@ -80,12 +80,12 @@ Route::post('/v1/manager/{id}/allow', 'API\User\ManagerController@allow');
  * )
  */
 
-Route::post('/v1/manager/{id}/reject', 'API\User\ManagerController@reject');
+Route::post('/v1/manager/reject', 'API\User\ManagerController@reject');
 
 /**
  * @SWG\Post(
- *   path="/api/v1/manager/{id}/block",
- *   description="Заблокировать все сайты вебмастера.",
+ *   path="/api/v1/manager/block",
+ *   description="Заблокировать указанные сайты.",
  *   operationId="managerList",
  *   produces={"application/json"},
  *   tags={"manager", "admin"},
@@ -107,7 +107,7 @@ Route::post('/v1/manager/{id}/reject', 'API\User\ManagerController@reject');
  * )
  */
 
-Route::post('/v1/manager/{id}/block', 'API\User\ManagerController@block');
+Route::post('/v1/manager/block', 'API\User\ManagerController@block');
 
 /**
  * @SWG\Get(

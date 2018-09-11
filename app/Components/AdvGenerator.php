@@ -39,14 +39,17 @@ class AdvGenerator extends Component {
     private $bannerForm; // Banner form: carousel, simple, three in row...
     private $getDummy; // Is this adv dummy or not?
     private $maxBanners = 3; // Max banners per container
+    private $language = null; // Language targeting
 
-    public function __construct($contType = null, $contForm = null, $bannerType = null, $bannerForm = null, $getDummy = false)
+    public function __construct($contType = null, $contForm = null, $bannerType = null, $bannerForm = null, $getDummy = false, $language = null, $numBanners = null)
     {
         $this->contType = $contType;
         $this->contForm = $contForm;
         $this->bannerType = $bannerType;
         $this->bannerForm = $bannerForm;
         $this->getDummy = $getDummy;
+        $this->language = $language;
+        $this->numBanners = $numBanners;
 
         parent::__construct();
     }
@@ -111,7 +114,7 @@ class AdvGenerator extends Component {
 
         $this->_addGeoLocation($bannerQuery); // @TODO Comment or uncomment this for tests
         $this->_addTimeLinking($bannerQuery);
-        $this->_addBrowserLanguage($bannerQuery);
+        $this->_addBrowserLanguage($bannerQuery, $this->language);
 
         if($this->bannerForm || $this->bannerType) {
             $bannerQuery->join('advs_types-advs t2', 't2.adv_id', '=', 't1.adv_id');
@@ -130,6 +133,7 @@ class AdvGenerator extends Component {
                     ->where('t4.status', '=', 0)
                     ->where('t5.status', '=', 0)
                     ->where('t6.status', '=', 0)
+                    ->distinct()
                     ->get();
 
         return $this->_rollTheDice($queryResult);
@@ -157,9 +161,15 @@ class AdvGenerator extends Component {
 
         $generator = new RandomGenerator();
         $banners = [];
-        for($i = 0; $i < $this->maxBanners; $i++) {
-            $randIndex = floor($generator->getRandomFloat() * $limit);
-            $banners[$i] = $queryResult[$randIndex];
+
+        if(count($queryResult) > 0) {
+            $randomLimit = count($queryResult);
+            $counterLimit = $this->numBanners ? $this->numBanners : $this->maxBanners;
+
+            for ($i = 0; $i < $counterLimit; $i++) {
+                $randIndex = floor($generator->getRandomFloat() * $limit);
+                $banners[$i] = $queryResult[$randIndex];
+            }
         }
 
         return $banners;
@@ -193,7 +203,10 @@ class AdvGenerator extends Component {
      * @param $bannerQuery
      */
     private function _addBrowserLanguage($bannerQuery, $userLanguage) {
-        $bannerQuery->whereIn('t1.browser_language', [$userLanguage, null]);
+        $bannerQuery->where(function ($query) use ($userLanguage) {
+            $query->where('t1.browser_language', '=', $userLanguage)
+                  ->orWhereNull('t1.browser_language');
+        });
     }
 
     /**
@@ -206,10 +219,16 @@ class AdvGenerator extends Component {
     private function _addGeoLocation($bannerQuery) {
         $record = $this->_getGeoRecord();
         if($record->country->isoCode) { // Country targeting
-            $bannerQuery->whereIn('t1.country_code', [$record->country->isoCode, null]);
+            $bannerQuery->where(function ($query) use ($record) {
+                $query->where('t1.country_code', '=', $record->country->isoCode)
+                      ->orWhereNull('t1.country_code');
+            });
         }
         if($record->mostSpecificSubdivision->isoCode) { // Area targeting
-            $bannerQuery->where('t1.area_code', [$record->mostSpecificSubdivision->isoCode, null]);
+            $bannerQuery->where(function ($query) use ($record) {
+                $query->where('t1.area_code', '=', $record->mostSpecificSubdivision->isoCode)
+                      ->orWhereNull('t1.area_code');
+            });
         }
     }
 
@@ -273,16 +292,56 @@ class AdvGenerator extends Component {
                 );
 
             } else {
+
+                // Put shows...
+                $this->_putCampaignShow($banners);
+                $this->_putAdvGroupShow($banners);
+                $this->_putAdvShow($banners);
+
                 return $this->mix(
                     new $container[0]->container_type_classname($container[0]),
                     new $container[0]->container_form_classname($container[0]),
                     $banners,
                     $container[0]
                 );
+
             }
         }
 
         return 'No banners yet';
+    }
+
+    /**
+     * Put campaign show
+     */
+    private function _putCampaignShow($banners) {
+        foreach ($banners as $banner) {
+            $campaign = UICampaign::where('real_id', $banner->campaign_id)->first();
+            $campaign->num_shows++;
+            $campaign->save();
+        }
+    }
+
+    /**
+     * Put advGroup show
+     */
+    private function _putAdvGroupShow($banners) {
+        foreach ($banners as $banner) {
+            $advGroup = UIAdvGroup::where('real_id', $banner->advgroup_id)->first();
+            $advGroup->num_shows++;
+            $advGroup->save();
+        }
+    }
+
+    /**
+     * Put adv show
+     */
+    private function _putAdvShow($banners) {
+        foreach ($banners as $banner) {
+            $adv = UIAdv::where('real_id', $banner->adv_id)->first();
+            $adv->num_shows++;
+            $adv->save();
+        }
     }
 
 

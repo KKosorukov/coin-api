@@ -29,11 +29,11 @@ class PasswordResetStepTwo extends ApiFormRequest
     public function messages()
     {
         return [
-            'password.required' => 'Введите пароль!',
-            'password.max' => 'Пароль не может превышать 30 символов!',
-            'password_repeat.same' => 'Пароль и повтор пароля должны совпадать!',
-            'password_repeat.required' => 'Повтор пароля должен быть введён!',
-            'code.required' => 'Токен должен быть послан!'
+            'password.required' => trans('adventa-account.password.required'),
+            'password.max' => trans('adventa-account.password.max'),
+            'password_repeat.same' => trans('adventa-account.password_repeat.same'),
+            'password_repeat.required' => trans('adventa-account.password_repeat.required'),
+            'code.required' => trans('adventa-account.code.required')
         ];
     }
 }

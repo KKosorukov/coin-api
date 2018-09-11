@@ -53,12 +53,12 @@ class GeonamesConnector extends Component {
      * Get countries from geonames or DB, if exists
      */
     public function getCountries($continent) {
-        // If not exists countries in databse...
+        // If not exists countries in database...
         if(count(Country::all()) == 0) {
             $this->placeCountriesIntoDatabase();
         }
 
-        return Country::where(['continent_code' => $continent])->get();
+        return Country::whereIn('continent_code', $continent)->get();
     }
 
     /**
@@ -70,7 +70,7 @@ class GeonamesConnector extends Component {
             $this->placeAreasIntoDatabase();
         }
 
-        return Area::where(['country_code' => $country])->get();
+        return Area::whereIn('country_code', $country)->get();
     }
 
     /**
@@ -82,12 +82,12 @@ class GeonamesConnector extends Component {
             $this->placeCitiesIntoDatabase();
         }
 
-        return City::where(['country_code' => $country, 'area_code' => $area])->get();
+        return City::whereIn('country_code', $country)->whereIn('area_code', $area)->get();
     }
 
 
     private function _getCountriesFromGeonames() {
-        $res = $this->guzzle->request('GET', $this->geonamesApiUrl.'/countryInfo?lang=ru&username='.$this->login);
+        $res = $this->guzzle->request('GET', $this->geonamesApiUrl.'/countryInfo?lang=en&username='.$this->login);
         if($res->getStatusCode() == 200) {
             $xml = simplexml_load_string($res->getBody());
             $json = json_encode($xml);
@@ -187,5 +187,31 @@ class GeonamesConnector extends Component {
             $cityModel->name = $record['city_name'];
             $cityModel->save();
         }
+    }
+
+    /**
+     * Place all populations into database
+     */
+    public function placePopulations() {
+        $csv = CsvReader::createFromPath(Storage::path(env('POPULATIONS_COUNTRIES_CSV_FILE')))->setHeaderOffset(0);
+
+        foreach ($csv as $record) {
+            $country = Country::where('country_code', $record['Code'])->first();
+            $country->population = str_replace(',', '', $record['Population']);
+            $country->save();
+        }
+
+        echo "Success! Populations for countries added into database.\r\n";
+
+
+        $csv = CsvReader::createFromPath(Storage::path(env('POPULATIONS_CONTINENTS_CSV_FILE')))->setHeaderOffset(0);
+
+        foreach ($csv as $record) {
+            $country = Continent::where('continent_code', $record['Code'])->first();
+            $country->population = str_replace(',', '', $record['Population']);
+            $country->save();
+        }
+
+        echo "Success! Populations for continents added into database.\r\n";
     }
 }

@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'email.required' => 'E-mail is required.',
+    'email.max' => 'E-mail cannot exceed 50 characters.',
+    'email.email' => 'E-mail format is incorrect.',
+    'email.unique' => 'The user already exists. Do you need to reset your password to log in?',
+    'secret_question_id.required' => 'Select a secret question.',
+    'secret_question_id.integer' => 'The secret question: wrong format.',
+    'secret_question_id.secret_question' => 'This secret question does not exist.',
+    'secret_question_answer.required' => 'You must answer the secret question.',
+    'secret_question_answer.correct_secret_answer' => 'Answer or question are incorrect.',
+    'password.required' => 'Enter your password.',
+    'password.max' => 'Password cannot exceed 30 characters.',
+    'password_repeat.same' => 'Password and repeat-password must match.',
+    'password_repeat.required' => 'Repeat your password.',
+    'code.required' => 'Token must be sent.',
+    'first_name.required' => 'The name is required.',
+    'first_name.max' => 'The name cannot exceed 50 characters.',
+    'first_name.min' => 'The name must contain at least 1 character.',
+    'last_name.required' => 'The surname is required.',
+    'last_name.max' => 'The surname cannot exceed 50 characters.',
+    'last_name.min' => 'The surname must contain at least 1 character.',
+    'skype_id.max' => 'Skype ID cannot exceed 30 characters.',
+    'telegram_id.max' => 'Telegram ID cannot exceed 30 characters.',
+    'role.required' => 'User part must be determined.',
+    'role.role_exists' => 'Sorry, this part does not exist.',
+    'role.non_admin' => 'This part is not available for assignment to a new user.',
+    'status.integer' => 'Status can only be an integer from 1 to 5.'
+];

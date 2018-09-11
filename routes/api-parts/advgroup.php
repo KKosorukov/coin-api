@@ -1,6 +1,41 @@
 <?php
 
-Route::get('/v1/advgroup', 'API\Adv\AdvGroupController@getAllAdvGroups');
+/**
+ * @SWG\Get(
+ *     path="/api/v1/advgroup/{from?}/{to?}",
+ *     description="Возвращает коллекцию групп объявлений",
+ *     operationId="getAdvgroups",
+ *     produces={"application/json"},
+ *     tags={"advgroup"},
+ *     @SWG\Parameter(
+ *       name="from",
+ *       in="path",
+ *       type="string",
+ *       description="Дата начала для фильтра вывода (формат YYYY-MM-DD)",
+ *     ),
+ *     @SWG\Parameter(
+ *       name="to",
+ *       in="path",
+ *       type="string",
+ *       description="Дата конца для фильтра вывода (формат YYYY-MM-DD)",
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="JSON с данными по кампаниям",
+ *         @SWG\Schema(
+ *              type="array",
+ *              @SWG\Items(ref="#/definitions/CampaignResource")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     )
+ * )
+ */
+
+
+Route::get('/v1/advgroup/{from?}/{to?}', 'API\Adv\AdvGroupController@getAllAdvGroups');
 
 
 /**

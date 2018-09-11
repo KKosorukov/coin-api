@@ -29,12 +29,12 @@ class UploadBanner extends ApiFormRequest
     public function messages()
     {
         return [
-            'banner.required' => 'Обязательно передайте base64-строку баннера!',
-            'banner.base64image' => 'Base64-строка некорректна!',
-            'cont_type.required' => 'Тип контейнера обязателен!',
-            'cont_type.exists' => 'Тип контейнера, который вы указали, не существует! Укажите vertical или horizontal!',
-            'cont_form.required' => 'Форма контейнера обязательна!',
-            'cont_form.exists' => 'Форма контейнера, которую вы указали, не существует! Укажите inline или popup!'
+            'banner.required' => trans('adventa-banner.banner.required'),
+            'banner.base64image' => trans('adventa-banner.banner.base64image'),
+            'cont_type.required' => trans('adventa-banner.cont_type.required'),
+            'cont_type.exists' => trans('adventa-banner.cont_type.exists'),
+            'cont_form.required' => trans('adventa-banner.cont_form.required'),
+            'cont_form.exists' => trans('adventa-banner.cont_form.exists')
         ];
     }
 }

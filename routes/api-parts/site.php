@@ -186,3 +186,109 @@ Route::get('/v1/site/list', 'API\Site\SiteController@list');
  */
 
 Route::post('/v1/site/check', 'API\Site\SiteController@check');
+
+
+/**
+ * @SWG\Get(
+ *   path="/api/v1/webmaster/list",
+ *   description="Получить список вебмастеров.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="object",
+ *         @SWG\Items(ref="#/definitions/WebmasterResource")
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::get('/v1/site/list-grouped-by-webmasters', 'API\Site\SiteController@getSiteListGroupedByWebmasters');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/allow",
+ *   description="Одобрить все сайты вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/site/allow', 'API\Site\SiteController@allow');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/reject",
+ *   description="Отказать всем сайтам вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/site/reject', 'API\Site\SiteController@reject');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/block",
+ *   description="Заблокировать все сайты вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/site/block', 'API\Site\SiteController@block');

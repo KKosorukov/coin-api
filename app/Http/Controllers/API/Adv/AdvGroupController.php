@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\API\Adv;
 
-use App\Http\Resources\AdvGroupResource;
-use App\Models\Backoffice\AdvGroup;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Mockery\Exception;
-
 use App\Http\Requests\EditAdvGroup;
 use App\Http\Requests\CreateAdvGroup;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use App\Http\Resources\AdvGroupResource;
+use App\Models\Backoffice\AdvGroup;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Requests\GetByPeriod;
 
 class AdvGroupController extends Controller
 {
@@ -41,9 +35,33 @@ class AdvGroupController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function getAllAdvGroups()
+    public function getAllAdvGroups(GetByPeriod $request)
     {
-        return AdvGroupResource::collection(AdvGroup::all());
+        // Default period = 30 days
+        if(!$request->from && !$request->to) {
+            $from = Carbon::now()->subDays(30)->format('Y-m-d');
+            $to = Carbon::now()->format('Y-m-d');
+        } else {
+
+            if(!$request->from) {
+                $from = Carbon::now()->subDays(30)->format('Y-m-d');
+            } else {
+                $from = $request->from;
+            }
+
+            if(!$request->to) {
+                $to = Carbon::now()->format('Y-m-d');
+            } else {
+                $to = $request->to;
+            }
+        }
+
+        $advGroups = AdvGroup::where('created_at', '>=', $from)
+            ->where('created_at', '<=', $to)
+            ->get()
+            ->reverse();
+
+        return AdvGroupResource::collection($advGroups);
     }
 
     /**
@@ -64,10 +82,9 @@ class AdvGroupController extends Controller
      */
     public function createAdvGroup(CreateAdvGroup $request)
     {
-        if($request->validated()) {
+        if ($request->validated()) {
             // Dirty hack of: segments param is exists, but "required" is only filled array
-
-            if(auth()->user()->hasAccess('advgroups.create')) {
+            if (auth()->user()->hasAccess('advgroups.create')) {
                 $newAdvGroup = AdvGroup::create($request->all() + [
                     'user_id' => auth()->user()->id,
                     'current_budget' => $request->input('budget'),
@@ -75,7 +92,7 @@ class AdvGroupController extends Controller
                 ]);
 
                 // Create link between advgroup and segment
-                if($newAdvGroup) {
+                if ($newAdvGroup) {
                     foreach ($request->segments as $segmentId) {
                         DB::connection('mysql-backoffice')->table('segments-adv_groups')->insert([
                             'segment_id' => $segmentId,
@@ -114,7 +131,7 @@ class AdvGroupController extends Controller
      * @return array
      */
     public function updateAdvGroup(EditAdvGroup $request) {
-        if($request->validated()) {
+        if ($request->validated()) {
             $user = auth()->user();
 
             $updatedAdvGroup = AdvGroup::find([
@@ -122,11 +139,11 @@ class AdvGroupController extends Controller
                 'user_id' => $user->id
             ])->first();
 
-            if(!$updatedAdvGroup) {
+            if (!$updatedAdvGroup) {
                 throw new NotFoundHttpException('Adv Group not found');
             }
 
-            if($user->hasAccess('advgroups.edit') && ($user->hasAccess('advgroups.edit-own') && $user->id == $updatedAdvGroup->user_id)) {
+            if ($user->hasAccess('advgroups.edit') && ($user->hasAccess('advgroups.edit-own') && $user->id == $updatedAdvGroup->user_id)) {
                 $updatedAdvGroup->update($request->all());
                 return [
                     'success' => (bool)$updatedAdvGroup,
@@ -157,7 +174,7 @@ class AdvGroupController extends Controller
             throw new NotFoundHttpException('Adv Group not found');
         }
 
-        if($user->hasAccess('advgroups.delete') || ($user->id == $advGroupModel->user_id && $user->hasAccess('advgroups.delete-own'))) {
+        if ($user->hasAccess('advgroups.delete') || ($user->id == $advGroupModel->user_id && $user->hasAccess('advgroups.delete-own'))) {
 
             $answer = AdvGroupResource::make($advGroupModel);
             $advGroupModel->delete();

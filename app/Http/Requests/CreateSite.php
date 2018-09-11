@@ -23,10 +23,10 @@ class CreateSite extends ApiFormRequest
     public function messages()
     {
         return [
-            'url.required'       => 'Введите URL сайта.',
-            'is_text.boolean'    => 'Передайте значения `false` или `true`!',
-            'is_banner.boolean'  => 'Передайте значения `false` или `true`!',
-            'is_video.boolean'   => 'Передайте значения `false` или `true`!',
+            'url.required'       => trans('adventa-site.name.required'),
+            'is_text.boolean'    => trans('adventa-site.is_text.boolean'),
+            'is_banner.boolean'  => trans('adventa-site.is_banner.boolean'),
+            'is_video.boolean'   => trans('adventa-site.is_video.boolean'),
         ];
     }
 }

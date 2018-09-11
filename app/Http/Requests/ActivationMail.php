@@ -28,8 +28,8 @@ class ActivationMail extends ApiFormRequest
     public function messages()
     {
         return [
-            'user.required' => 'Пользователь должен быть указан!',
-            'user.exists' => 'Такого пользователя не существует.'
+            'user.required' => trans('adventa-activation.user.required'),
+            'user.exists' => trans('adventa-activation.user.exists')
         ];
     }
 }

@@ -51,7 +51,7 @@ class BannerType extends Model
         if($banner) {
             $this->banner = $banner;
             $this->viewParams += [
-                'banner' => $this->banner
+                'banner' => $this->banner,
             ];
         }
 
@@ -62,19 +62,9 @@ class BannerType extends Model
      * Recalc budgets. Temporary method.
      */
     public function recalcBudgets() {
-
         /**
-         * @TODO Make this only on click, not on show
+         * @TODO Here was a recalcer... Now here is only a kitty =^O.O^=
          */
-        $budgetor = new Budgetor();
-        $budgetor
-            ->setBanner(UIBanner::where(['id' => $this->banner->id])->first())
-            ->setAdv(UIAdv::where(['real_id' => $this->banner->adv_id])->first())
-            ->setAdvGroup(UIAdvGroup::where(['real_id' => $this->banner->advgroup_id])->first())
-            ->setCampaign(UICampaign::where(['real_id' => $this->banner->campaign_id])->first())
-            ->setProject(UIProject::where(['real_id' => $this->banner->project_id])->first())
-            ->recalc();
-
         return $this;
     }
 

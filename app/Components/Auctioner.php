@@ -90,7 +90,7 @@ class Auctioner extends Component {
      * @param $calced
      */
     private function _searchMaxK($calced) {
-        $maxK = 0;
+        $maxK = 0.0000001;
         foreach ($calced as $k) {
             if($maxK < $k) {
                 $maxK = $k;
@@ -408,7 +408,7 @@ class Auctioner extends Component {
             $createdAdvgroups = $this->_createAdvGroupRow($banner);
             $createdProjects = $this->_createProjectRow($banner);
 
-            echo "Probability for banner for adv id [" .$banner->adv_id. "] = ".$calced[$banner->adv_id]."\r\n";
+            echo "Probability for banner for adv id [" .$banner->adv_id. "] = ".$weight."\r\n";
 
             if($createdBanners && $createdCampaigns && $createdAdvgroups && $createdProjects) {
 
@@ -855,6 +855,7 @@ class Auctioner extends Component {
             $backofficeAdv->showcase_status = $advFromUI->status;
             $backofficeAdv->num_shows = $advFromUI->num_shows;
             $backofficeAdv->num_clicks = $advFromUI->num_clicks;
+            $backofficeAdv->expenses = $backofficeAdv->advGroup->click_price * $backofficeAdv->num_clicks;
             $backofficeAdv->save();
             return true;
         }
@@ -901,6 +902,9 @@ class Auctioner extends Component {
             $backofficeAdvGroup->current_daily_budget = $advGroupFromUI->current_daily_budget;
             $backofficeAdvGroup->current_budget = $advGroupFromUI->current_budget;
             $backofficeAdvGroup->showcase_status = $advGroupFromUI->status;
+            $backofficeAdvGroup->num_shows = $advGroupFromUI->num_shows;
+            $backofficeAdvGroup->num_clicks = $advGroupFromUI->num_clicks;
+            $backofficeAdvGroup->expenses = $backofficeAdvGroup->click_price * $advGroupFromUI->num_clicks;
             $backofficeAdvGroup->save();
             return true;
         }
@@ -943,9 +947,17 @@ class Auctioner extends Component {
     private function _updateBackofficeCampaignsData($campaignFromUI) {
         $backofficeCampaign = Campaign::find($campaignFromUI->real_id);
         if($backofficeCampaign) {
+            $expensesSum = 0;
+            foreach ($backofficeCampaign->advGroups as $advGroup) {
+                $expensesSum += $advGroup->expenses;
+            }
+
             $backofficeCampaign->current_daily_budget = $campaignFromUI->current_daily_budget;
             $backofficeCampaign->current_budget = $campaignFromUI->current_budget;
             $backofficeCampaign->showcase_status = $campaignFromUI->status;
+            $backofficeCampaign->num_clicks = $campaignFromUI->num_clicks;
+            $backofficeCampaign->num_shows = $campaignFromUI->num_shows;
+            $backofficeCampaign->expenses = $expensesSum;
             $backofficeCampaign->save();
             return true;
         }

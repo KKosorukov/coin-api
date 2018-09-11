@@ -29,3 +29,32 @@
  * )
  */
 Route::get('/v1/system/user/{user}/code', 'API\System\SystemController@getCodeByUserId');
+
+
+
+/**
+ * @SWG\Get(
+ *   path="/v1/system/timezones",
+ *   description="Получить таймзоны (например, для регистрации)",
+ *   operationId="timezonesGet",
+ *   produces={"application/json"},
+ *   tags={"user"},
+ *   @SWG\Response(
+ *       response=200,
+ *       description="Коллекция часовых поясов",
+ *       @SWG\Schema(
+ *           type="object",
+ *           @SWG\Items(ref="#/definitions/TimezoneResource")
+ *       )
+ *   ),
+ *   @SWG\Response(
+ *       response=404,
+ *       description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *       response=403,
+ *       description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::get('/v1/system/timezones', 'API\System\SystemController@getTimezonesList');

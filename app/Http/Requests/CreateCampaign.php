@@ -34,21 +34,21 @@ class CreateCampaign extends ApiFormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Введите имя кампании!',
-            'name.max' => 'Имя кампании не может быть больше, чем 255 символов!',
-            'date_from.required' => 'Введите дату начала кампании!',
-            'date_to.required' => 'Введите дату окончания кампании!',
-            'date_from.date_format' => 'Дата начала кампании должна быть в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС!',
-            'date_to.date_format' => 'Дата окончания кампании должна быть в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС!',
-            'daily_budget.numeric' => 'Значение должно быть числом!',
-            'daily_budget.min' => 'Значение должно быть больше 0!',
-            'budget.numeric' => 'Значение должно быть числом!',
-            'budget.min' => 'Значение должно быть больше нуля!',
-            'daily_budget.project_daily_budget_limit' => 'Дневной лимит кампании не может превышать дневной лимит проекта!',
+            'name.required' => trans('adventa-campaign.name.required'),
+            'name.max' => trans('adventa-campaign.name.max'),
+            'date_from.required' => trans('adventa-campaign.date_from.required'),
+            'date_to.required' => trans('adventa-campaign.date_to.required'),
+            'date_from.date_format' => trans('adventa-campaign.date_from.date_format'),
+            'date_to.date_format' => trans('adventa-campaign.date_to.date_format'),
+            'daily_budget.numeric' => trans('adventa-campaign.daily_budget.numeric'),
+            'daily_budget.min' => trans('adventa-campaign.daily_budget.min'),
+            'budget.numeric' => trans('adventa-campaign.budget.numeric'),
+            'budget.min' => trans('adventa-campaign.budget.min'),
+            'daily_budget.project_daily_budget_limit' => trans('adventa-campaign.daily_budget.project_daily_budget_limit'),
            // 'budget.project_budget_limit' => 'Бюджет кампании не может превышать бюджет проекта!', // @TODO In the future this can be uncommented, because the logic is here
-            'budget.user_budget_limit' => 'Бюджет кампании не может превышать остаток бюджета пользователя!',
-            'project_id.required' => 'Укажите проект!',
-            'project_id.owner_of_project' => 'Создавать кампании разрешается только в своих проектах!'
+            'budget.user_budget_limit' => trans('adventa-campaign.budget.user_budget_limit'),
+            'project_id.required' => trans('adventa-campaign.project_id.required'),
+            'project_id.owner_of_project' => trans('adventa-campaign.project_id.owner_of_project')
         ];
     }
 }

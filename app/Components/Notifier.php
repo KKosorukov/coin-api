@@ -40,7 +40,7 @@ class Notifier extends Component {
     public function sendEmailNotice($event, $contentVars, User $to) {
         if(isset($this->mails[$event])) {
             $this->_writeNotice('success', 'Email for activation has been sent.');
-            $eventMailObj = new ($this->mails[$event]['class'])();
+            $eventMailObj = new $this->mails[$event]['class']();
             Mail::to($to)->send($eventMailObj->setTemplate($this->mails[$event]['template'], $contentVars));
             return $this;
         }

@@ -30,17 +30,17 @@ class CreateBanner extends ApiFormRequest
     public function messages()
     {
         return [
-            'adv_id.required' => 'Обязательно укажите идентификатор объявления!',
-            'adv_id.exists' => 'Такого объявления не существует!',
-            'adv_id.owner_of_adv' => 'Вы не являетесь владельцем рекламного объявления!',
-            'title.required' => 'Заголовок обязателен. До 255 символов.',
-            'title.string' => 'Укажите заголовок! Он должен быть не больше 255 символов',
-            'title.max' => 'Заголовок для баннер не может быть больше 255 символов!',
-            'title.min' => 'Заголовок для баннера должен быть указан обязательно! До 255 символов.',
-            'description.string' => 'Описание должно быть максимум 500 символов!',
-            'path.required' => 'Путь до файла должен быть задан!',
-            'path.max' => 'Максимальное количество символов в имени файла - 50!',
-            'path.banner_exists' => 'Такого баннера не существует в файловой системе!'
+            'adv_id.required' => trans('adventa-banner.adv_id.required'),
+            'adv_id.exists' => trans('adventa-banner.adv_id.exists'),
+            'adv_id.owner_of_adv' => trans('adventa-banner.adv_id.owner_of_adv'),
+            'title.required' => trans('adventa-banner.title.required'),
+            'title.string' => trans('adventa-banner.title.string'),
+            'title.max' => trans('adventa-banner.title.max'),
+            'title.min' => trans('adventa-banner.title.min'),
+            'description.string' => trans('adventa-banner.description.string'),
+            'path.required' => trans('adventa-banner.path.required'),
+            'path.max' => trans('adventa-banner.path.max'),
+            'path.banner_exists' => trans('adventa-banner.path.banner_exists')
         ];
     }
 }

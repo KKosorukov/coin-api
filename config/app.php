@@ -165,7 +165,8 @@ return [
         Swap\Laravel\SwapServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Geocoder\Laravel\Providers\GeocoderService::class,
-        Barryvdh\Cors\ServiceProvider::class
+        Barryvdh\Cors\ServiceProvider::class,
+        RezaAr\Highcharts\Provider::class
     ],
 
     /*
@@ -218,7 +219,8 @@ return [
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Piwik' => RobBrazier\Piwik\Facades\Piwik::class,
-        'Swap' => Swap\Laravel\Facades\Swap::class
+        'Swap' => Swap\Laravel\Facades\Swap::class,
+        'Chart' => RezaAr\Highcharts\Facade::class
     ],
 
 ];

@@ -86,6 +86,11 @@ use Illuminate\Database\Eloquent\Relations;
  *      description="Роль пользователя. Может принимать значения, определённые методом /api/v1/role.",
  *      default="available"
  *   ),
+ *   @SWG\Property(
+ *      property="avatar",
+ *      type="string",
+ *      description="Файл аватара"
+ *   ),
  * )
  */
 
@@ -100,7 +105,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'skype_id', 'telegram_id', 'api_key', 'id'
+        'first_name', 'last_name', 'email', 'password', 'skype_id', 'telegram_id', 'api_key', 'id', 'timezone', 'avatar'
     ];
 
     /**
@@ -151,12 +156,38 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Has only one timezone
+     * @return Relations\HasOne
+     */
+    public function timezone() : Relations\HasOne
+    {
+        return $this->hasOne(Timezone::class, 'id', 'timezone_id');
+    }
+
+    /**
      * Has many roles
      * @return Relations\BelongsToMany
      */
     public function roles(): Relations\BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'role_users', 'role_id', 'user_id');
+    }
+
+    /**
+     * Has one matomo row
+     * @return Relations\HasOne
+     */
+    public function matomo()
+    {
+        return $this->hasOne(\App\Models\Backoffice\Matomo\User::class, 'email', 'email');
+    }
+
+    /**
+     * Has many projects
+     * @return Relations\HasMany
+     */
+    public function projects() {
+        return $this->hasMany(Project::class, 'user_id');
     }
 
     /**

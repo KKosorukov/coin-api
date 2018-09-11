@@ -31,17 +31,17 @@ class CreateSegment extends ApiFormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Введите имя!',
-            'name.max' => 'Имя не может превышать 255 символов!',
-            'status.required' => 'Обязательно укажите тип!',
-            'status.in' => 'Тип может принимать одно из двух значений: 0 или 1!',
-            'params.required' => 'Хотя бы один параметр должен быть выбран!',
-            'params.json' => 'Параметры должны быть корректной JSON-строкой!',
-            'params.check_segment_params' => 'Не все параметры переданы корректно!',
-            'type.required' => 'Параметр типа должен принимать значения 0 или 1! (включение или исключение)',
-            'type.in' => 'Параметр типа должен принимать значения 0 или 1! (включение или исключение)',
-            'is_private.required' => 'Параметр частного или общего отображения должен быть обязательно!',
-            'is_private.in' => 'Параметр может быть либо 0 (не отображается в общем листе), либо 1 (отображается в общем листе)'
+            'name.required' => trans('adventa-segment.name.required'),
+            'name.max' => trans('adventa-segment.name.max'),
+            'status.required' => trans('adventa-segment.status.required'),
+            'status.in' => trans('adventa-segment.status.in'),
+            'params.required' => trans('adventa-segment.params.required'),
+            'params.json' => trans('adventa-segment.params.json'),
+            'params.check_segment_params' => trans('adventa-segment.params.check_segment_params'),
+            'type.in' => trans('adventa-segment.type.in'),
+            'type.required' => trans('adventa-segment.type.required'),
+            'is_private.required' => trans('adventa-segment.is_private.required'),
+            'is_private.in' => trans('adventa-segment.is_private.in'),
         ];
     }
 }

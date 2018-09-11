@@ -81,6 +81,40 @@ use App\Models\Backoffice\Adv;
  *      default="available",
  *      format="date-time"
  *   ),
+ *   @SWG\Property(
+ *      property="expenses",
+ *      type="numeric",
+ *      description="Затраты",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="scope",
+ *      type="integer",
+ *      description="Охват аудитории"
+ *   ),
+ *   @SWG\Property(
+ *      property="views",
+ *      type="integer",
+ *      description="Показы за период"
+ *   ),
+ *   @SWG\Property(
+ *      property="CTR",
+ *      type="numeric",
+ *      description="Коэффициент кликабельности",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="CPC",
+ *      type="numeric",
+ *      description="Цена за клик",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="clicks",
+ *      type="numeric",
+ *      description="Количество кликов",
+ *      format="float"
+ *   )
  * )
  */
 
@@ -98,7 +132,14 @@ class AdvGroupResource extends JsonResource
             'segments' => $this->segments,
             'budget' => $this->budget,
             'daily_budget' => $this->daily_budget,
-            'click_price' => $this->click_price
+            'click_price' => $this->click_price,
+            'expenses' => $this->expenses,
+            'scope' => $this->scope,
+            'views' => $this->num_shows,
+            'ctr' => $this->ctr,
+            'cpc' => $this->cpc,
+            'clicks' => $this->num_clicks,
+            'created_at' => $this->created_at
         ];
     }
 }

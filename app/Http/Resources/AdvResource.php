@@ -192,7 +192,53 @@ use App\Models\Backoffice\Banner;
  *              container_type_id : null
  *          }
  *       ",
- *   )
+ *   ),
+ *   @SWG\Property(
+ *      property="expenses",
+ *      type="numeric",
+ *      description="Затраты",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="scope",
+ *      type="integer",
+ *      description="Охват аудитории"
+ *   ),
+ *   @SWG\Property(
+ *      property="views",
+ *      type="integer",
+ *      description="Показы за период"
+ *   ),
+ *   @SWG\Property(
+ *      property="CTR",
+ *      type="numeric",
+ *      description="Коэффициент кликабельности",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="CPC",
+ *      type="numeric",
+ *      description="Цена за клик",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="clicks",
+ *      type="numeric",
+ *      description="Количество кликов",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="clicks",
+ *      type="numeric",
+ *      description="Количество кликов",
+ *      format="float"
+ *   ),
+ *   @SWG\Property(
+ *      property="quality",
+ *      type="numeric",
+ *      description="Показатель качества",
+ *      format="float"
+ *   ),
  * )
  */
 
@@ -220,7 +266,14 @@ class AdvResource extends JsonResource
             'text' => $this->text,
             'moderator_comment' => $this->moderator_comment,
             'daily_budget' => $this->daily_budget,
-            'sets' => $this->sets
+            'sets' => $this->sets,
+            'expenses' => $this->expenses,
+            'scope' => $this->scope,
+            'views' => $this->num_shows,
+            'ctr' => $this->ctr,
+            'cpc' => $this->cpc,
+            'clicks' => $this->num_clicks,
+            'quality' => $this->quality
         ];
     }
 }

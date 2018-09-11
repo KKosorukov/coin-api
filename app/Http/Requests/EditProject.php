@@ -30,16 +30,16 @@ class EditProject extends ApiFormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Введите имя!',
-            'name.max' => 'Имя не может превышать 255 символов!',
-            'status.required' => 'Обязательно укажите статус!',
-            'status.in' => 'Статус может принимать одно из двух значений: 0 или 1!',
-            'daily_budget.numeric' => 'Значение должно быть числом!',
-            'daily_budget.min' => 'Значение должно быть больше 0!',
-            'budget.numeric' => 'Значение должно быть числом!',
-            'budget.min' => 'Значение должно быть больше нуля!',
-            'budget.user_budget_limit' => 'Значение бюджета не может превышать остаток суммы на счету!',
-            'daily_budget.user_daily_budget_limit' => 'Значение дневного бюджета не может превышать значение общего бюджета!'
+            'name.required' => trans('adventa-project.name.required'),
+            'name.max' => trans('adventa-project.name.max'),
+            'status.required' => trans('adventa-project.status.required'),
+            'status.in' => trans('adventa-project.status.in'),
+            'daily_budget.numeric' => trans('adventa-project.daily_budget.numeric'),
+            'daily_budget.min' => trans('adventa-project.daily_budget.min'),
+            'budget.numeric' => trans('adventa-project.budget.numeric'),
+            'budget.min' => trans('adventa-project.budget.min'),
+            'budget.user_budget_limit' => trans('adventa-project.budget.user_budget_limit'),
+            'daily_budget.user_daily_budget_limit' => trans('adventa-project.daily_budget.user_daily_budget_limit')
         ];
     }
 }

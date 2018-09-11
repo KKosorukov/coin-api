@@ -30,14 +30,14 @@ class PreviewAdv extends ApiFormRequest
     public function messages()
     {
         return [
-            'container_type.required' => 'Обязательно укажите тип контейнера!',
-            'container_form.required' => 'Обязательно укажите форму контейнера!',
-            'banner_type.required' => 'Обязательно укажите тип баннера!',
-            'banner_form.required' => 'Обязательно укажите форму баннера!',
-            'container_type.exists' => 'Не существует такого типа контейнера!',
-            'container_form.exists' => 'Не существует такой формы контейнера!',
-            'banner_type.exists' => 'Не существует такого типа баннера!',
-            'banner_form.exists' => 'Не существует такой формы баннера!'
+            'container_type.required' => trans('adventa-adv.container_type.required'),
+            'container_form.required' => trans('adventa-adv.container_form.required'),
+            'banner_type.required' => trans('adventa-adv.banner_type.required'),
+            'banner_form.required' => trans('adventa-adv.banner_form.required'),
+            'container_type.exists' => trans('adventa-adv.container_type.exists'),
+            'container_form.exists' => trans('adventa-adv.container_form.exists'),
+            'banner_type.exists' => trans('adventa-adv.banner_type.exists'),
+            'banner_form.exists' => trans('adventa-adv.banner_form.exists')
         ];
     }
 }

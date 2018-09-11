@@ -44,6 +44,7 @@ class GeoBaseCreate extends Command
         $geonamesConnector->placeCountriesIntoDatabase();
         $geonamesConnector->placeCitiesIntoDatabase();
         $geonamesConnector->placeAreasIntoDatabase();
+        $geonamesConnector->placePopulations();
 
         return true;
     }

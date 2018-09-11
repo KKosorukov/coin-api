@@ -28,8 +28,8 @@ class DeleteUncreatedBannerFile extends ApiFormRequest
     public function messages()
     {
         return [
-            'path.required' => 'Путь до файла должен быть указан!',
-            'path.banner_image_exists' => 'Такого файла не существует.'
+            'path.required' => trans('adventa-adv.path.required'),
+            'path.banner_image_exists' => trans('adventa-adv.path.banner_image_exists')
         ];
     }
 }

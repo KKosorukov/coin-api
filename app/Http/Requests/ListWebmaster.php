@@ -27,7 +27,7 @@ class ListWebmaster extends ApiFormRequest
     public function messages()
     {
         return [
-            'status.integer'   => 'status может быть только integer от 1 до 5 включительно.',
+            'status.integer'   => trans('adventa-account.status.integer'),
         ];
     }
 }

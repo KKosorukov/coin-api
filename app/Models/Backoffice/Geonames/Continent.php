@@ -21,7 +21,7 @@ class Continent extends Model
 {
     protected $table = 'geo-continent';
 
-    protected $fillable = ['name', 'continent_code'];
+    protected $fillable = ['name', 'continent_code', 'population'];
 
     protected $hidden = ['id'];
 

@@ -18,7 +18,7 @@ class EditCampaign extends ApiFormRequest
             'date_from' => 'required|date_format:Y-m-d H:i:s',
             'date_to' => 'required|date_format:Y-m-d H:i:s',
             'comment' => 'string',
-            'daily_budget' => 'required|integer|min:0|project_daily_budget_limit',
+            'daily_budget' => 'required|numeric|min:0|project_daily_budget_limit',
             //'budget' => 'numeric|min:0|project_budget_limit',  // @TODO In the future this can be uncommented, because the logic is here
             'budget' => 'numeric|min:0|user_budget_limit',
             'status_global' => 'required|in:0,1,2,3',
@@ -36,28 +36,25 @@ class EditCampaign extends ApiFormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Введите имя кампании!',
-            'name.max' => 'Имя кампании не может быть больше, чем 255 символов!',
-            'date_from.required' => 'Введите дату начала кампании!',
-            'date_to.required' => 'Введите дату окончания кампании!',
-            'date_from.date_format' => 'Дата начала кампании должна быть в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС!',
-            'date_to.date_format' => 'Дата окончания кампании должна быть в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС!',
-            'daily_budget.required' => 'Дневной бюджет должен быть обязательно! Если дневного бюджета нет, передавайте 0.',
-            'daily_budget.integer' => 'Значение бюджета должно быть целым числом!',
-            'daily_budget.min' => 'Значение бюджета не может быть меньше 0!',
-            'status_global.required' => 'Глобальный статус кампании должен быть обозначен!',
-            'status_global.in' => 'Глобальный статус может принимать значения от 0 до 3!',
-            'status_moderation.required' => 'Статус модерации должен быть введён!',
-            'status_moderation.in' => 'Статус модерации может принимать значения от 0 до 3!',
-            'daily_budget.numeric' => 'Значение должно быть числом!',
-            'daily_budget.min' => 'Значение должно быть больше 0!',
-            'budget.numeric' => 'Значение должно быть числом!',
-            'budget.min' => 'Значение должно быть больше нуля!',
+            'name.required' => trans('adventa-campaign.name.required'),
+            'name.max' => trans('adventa-campaign.name.max'),
+            'date_from.required' => trans('adventa-campaign.date_from.required'),
+            'date_to.required' => trans('adventa-campaign.date_to.required'),
+            'date_from.date_format' => trans('adventa-campaign.date_from.date_format'),
+            'date_to.date_format' => trans('adventa-campaign.date_to.date_format'),
+            'daily_budget.numeric' => trans('adventa-campaign.daily_budget.numeric'),
+            'daily_budget.min' => trans('adventa-campaign.daily_budget.min'),
+            'budget.numeric' => trans('adventa-campaign.budget.numeric'),
+            'budget.min' => trans('adventa-campaign.budget.min'),
+            'status_global.required' => trans('adventa-campaign.status_global.required'),
+            'status_global.in' => trans('adventa-campaign.status_global.in'),
+            'status_moderation.required' => trans('adventa-campaign.status_moderation.required'),
+            'status_moderation.in' => trans('adventa-campaign.status_moderation.in'),
             // 'budget.project_budget_limit' => 'Бюджет кампании не может превышать бюджет проекта!', // @TODO In the future this can be uncommented, because the logic is here
-            'budget.user_budget_limit' => 'Бюджет кампании не может превышать остаток бюджета пользователя!',
-            'daily_budget.project_daily_budget_limit' => 'Дневной лимит кампании не может превышать дневной лимит проекта!',
-            'project_id.required' => 'Укажите проект!',
-            'project_id.owner_of_project' => 'Создавать кампании разрешается только в своих проектах!'
+            'budget.user_budget_limit' => trans('adventa-campaign.budget.user_budget_limit'),
+            'daily_budget.project_daily_budget_limit' => trans('adventa-campaign.daily_budget.project_daily_budget_limit'),
+            'project_id.required' => trans('adventa-campaign.project_id.required'),
+            'project_id.owner_of_project' => trans('adventa-campaign.project_id.owner_of_project')
         ];
     }
 }

@@ -51,5 +51,4 @@ class Project extends Model
     {
         return $this->hasMany(AdvGroup::class, 'project_id', 'id');
     }
-
 }

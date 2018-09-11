@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API\Campaign;
 
+use App\Http\Requests\GetByPeriod;
 use App\Http\Resources\CampaignResource;
 use App\Models\Backoffice\Campaign;
 
+use Piwik\Plugins\BulkTracking\Tracker\Requests;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Illuminate\Http\Request;
@@ -15,6 +17,10 @@ use App\Http\Requests\EditCampaign;
 use App\Http\Requests\CreateCampaign;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+
+use Illuminate\Support\Carbon;
+
+use DB;
 
 class CampaignController extends Controller
 {
@@ -39,9 +45,33 @@ class CampaignController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function getAllCampaigns()
+    public function getAllCampaigns(GetByPeriod $request)
     {
-        return CampaignResource::collection(Campaign::all());
+        // Default period = 30 days
+        if(!$request->from && !$request->to) {
+            $from = Carbon::now()->subDays(30)->format('Y-m-d');
+            $to = Carbon::now()->format('Y-m-d');
+        } else {
+
+            if(!$request->from) {
+                $from = Carbon::now()->subDays(30)->format('Y-m-d');
+            } else {
+                $from = $request->from;
+            }
+
+            if(!$request->to) {
+                $to = Carbon::now()->format('Y-m-d');
+            } else {
+                $to = $request->to;
+            }
+        }
+
+        $campaigns = Campaign::where('created_at', '>=', $from)
+            ->where('created_at', '<=', $to)
+            ->get()
+            ->reverse();
+
+        return CampaignResource::collection($campaigns);
     }
 
     /**
@@ -59,6 +89,9 @@ class CampaignController extends Controller
                 $params = $request->all();
                 if(!isset($params['budget'])) {
                     $params['budget'] = 0;
+                }
+                if(!isset($params['daily_budget']) || $params['daily_budget'] == 0) { // If daily budget not available... Full budget == daily budget
+                    $params['daily_budget'] = $params['budget'];
                 }
 
                 $newCampaign = Campaign::create($params + [

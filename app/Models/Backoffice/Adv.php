@@ -2,15 +2,16 @@
 
 namespace App\Models\Backoffice;
 
-use App\Models\Backoffice\AdvType;
-use App\Models\Backoffice\User;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Adv extends Model
 {
-    protected $connection = 'mysql-backoffice';
+    const STATUS_MODERATION_ACTIVE     = 1;
+    const STATUS_MODERATION_MODERATION = 2;
+    const STATUS_MODERATION_REJECTED   = 3;
+    const STATUS_MODERATION_BLOCKED    = 4;
 
+    protected $connection = 'mysql-backoffice';
 
     protected $fillable = [
         'name',
@@ -45,7 +46,7 @@ class Adv extends Model
     ];
 
     protected $guarded = [
-
+        'created_at'
     ];
 
     protected $hidden = [
@@ -62,7 +63,7 @@ class Adv extends Model
      * @return mixed
      */
     public function advType() {
-        return $this->belongsToMany('App\Models\Backoffice\AdvType', 'advs_types-advs', 'adv_id', 'adv_type_id');
+        return $this->belongsToMany(AdvType::class, 'advs_types-advs', 'adv_id', 'adv_type_id');
     }
 
     /**
@@ -135,6 +136,22 @@ class Adv extends Model
      */
     public function sets() {
         return $this->hasMany(AdvSet::class, 'adv_id', 'id');
+    }
+
+    public function getScope() {
+        return null;
+    }
+
+    public function getCtr() {
+        return $this->num_shows > 0 ? $this->num_clicks / $this->num_shows : 0;
+    }
+
+    public function getCpc() {
+        return $this->num_clicks > 0 ? $this->expenses / $this->num_clicks : 0;
+    }
+
+    public function getQuality() {
+        return null;
     }
 
 }

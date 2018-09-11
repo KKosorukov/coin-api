@@ -11,6 +11,9 @@ use App\Http\Requests\UserRegistration;
 use App\Http\Requests\UserUpdate;
 use App\Http\Resources\SecretQuestionResource;
 use App\Http\Resources\UserResource;
+use App\Models\Backoffice\Bill;
+use App\Models\Backoffice\Campaign;
+use App\Models\Backoffice\Project;
 use App\Models\Backoffice\SecretQuestion;
 use App\Models\Backoffice\Role;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
@@ -31,6 +34,8 @@ use Validator;
 
 use App\Http\Requests\PasswordResetStepOne;
 use App\Http\Requests\PasswordResetStepTwo;
+use App\Http\Requests\UploadAvatar;
+use Storage;
 
 
 /**
@@ -54,7 +59,8 @@ class AccountController extends Controller
         ], [
             'only' => [
                 'updateProfile',
-                'sendActivationEmailAgain'
+                'sendActivationEmailAgain',
+                'uploadAvatar'
             ]
         ]);
     }
@@ -117,6 +123,7 @@ class AccountController extends Controller
             $userModel->telegram_id = $request->telegram_id;
             $userModel->secret_question_id = $request->secret_question_id;
             $userModel->secret_question_answer = md5($request->secret_question_answer);
+            $userModel->timezone_id = $request->timezone_id;
 
             if (!$userModel->save()) {
                 throw new UserNotDefinedException('Cannot update existing user: userId = ' . $userModel->id);
@@ -127,6 +134,15 @@ class AccountController extends Controller
 
             // Create activation pro new user
             $activationObj = Activation::create($newUser);
+
+            // Create first project per user, after registration
+            $projectModel = $this->_createFirstProject($userModel);
+
+            // Create bill of user
+            $billModel = $this->_createBillOnUser($userModel);
+
+            // Create first campaign in project
+            $this->_createFirstCampaign($projectModel);
 
             // Send email after creating. For activation.
             if($notifier = $this->_sendActivationMail($userModel, $activationObj)) {
@@ -148,6 +164,51 @@ class AccountController extends Controller
                 ]
             ];
         }
+    }
+
+    /**
+     * Create bill per user
+     *
+     * @param $userModel
+     * @return bool
+     */
+    private function _createBillOnUser($userModel) {
+        $billModel = new Bill;
+        $billModel->user_id = $userModel->id;
+        $billModel->num_tokens = 0;
+
+        return $billModel->save();
+    }
+
+    /**
+     * Create first project pro user
+     *
+     * @param $userModel
+     * @return Project
+     */
+    private function _createFirstProject($userModel) {
+        $defaultProjectModel = new Project;
+        $defaultProjectModel->fill([
+            'user_id' => $userModel->id,
+            'status' => '0',
+            'daily_budget' => 0,
+            'budget' => 0,
+            'current_daily_budget' => 0,
+            'current_budget' => 0,
+            'showcase_status' => '0',
+            'name' => 'Default project for user #'.$userModel->id
+        ]);
+        $defaultProjectModel->save();
+
+        return $defaultProjectModel;
+    }
+
+
+    private function _createFirstCampaign($projectModel) {
+        $defaultCampaignModel = new Campaign;
+        $defaultCampaignModel->fill([
+
+        ]);
     }
 
     /**
@@ -279,5 +340,59 @@ class AccountController extends Controller
      */
     public function getSecretQuestions(Request $request) {
         return SecretQuestionResource::collection(SecretQuestion::all());
+    }
+
+    /**
+     * Upload avatar for user
+     *
+     * @param UploadAvatar $request
+     */
+    public function uploadAvatar(UploadAvatar $request) {
+        if($request->validated()) {
+            /**
+             * @TODO Make cleaning of previous avatars
+             */
+            $user = auth()->user();
+
+            $base64Str = substr($request->avatar, strpos($request->avatar, ",") + 1);
+            $image = base64_decode($base64Str);
+            $explode = explode(',', $request->avatar);
+            $format = str_replace(
+                [
+                    'data:image/',
+                    ';',
+                    'base64',
+                ],
+                [
+                    '', '', '',
+                ],
+                $explode[0]
+            );
+
+            $extensions = [
+                'jpeg' => 'jpg',
+                'png' => 'png',
+                'jpg' => 'jpg'
+            ];
+
+            if(!isset($extensions[$format])) {
+                return [
+                    'success' => false,
+                    'fileName' => null
+                ];
+            }
+
+            $safeName = md5(time().microtime().auth()->user()->id).'.'.$extensions[$format];
+
+            $answer = [
+                'status' => Storage::disk('public')->put('/avatars/'.$safeName, $image),
+                'fileName' => $safeName
+            ];
+
+            $user->avatar = $answer['fileName'];
+            $user->save();
+
+            return $answer;
+        }
     }
 }

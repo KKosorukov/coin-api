@@ -24,6 +24,7 @@ class SiteResource extends JsonResource
     public function toArray($request)
     {
         $result = parent::toArray($request);
+        $result['id']        = $this->id;
         $result['is_banner'] = $this->getBooleanFromBase($result, 'is_banner');
         $result['is_text']   = $this->getBooleanFromBase($result, 'is_text');
         $result['is_video']  = $this->getBooleanFromBase($result, 'is_video');

@@ -24,7 +24,7 @@ class AdvGroup extends Model
     ];
 
     protected $guarded = [
-
+        'created_at'
     ];
 
     protected $hidden = [
@@ -65,4 +65,17 @@ class AdvGroup extends Model
     public function segments() {
         return $this->belongsToMany('App\Models\Backoffice\Segment', 'segments-adv_groups', 'adv_group_id', 'segment_id');
     }
+
+    public function getScope() {
+        return null;
+    }
+
+    public function getCtr() {
+        return $this->num_shows > 0 ? $this->num_clicks / $this->num_shows : 0;
+    }
+
+    public function getCpc() {
+        return $this->num_clicks > 0 ? $this->expenses / $this->num_clicks : 0;
+    }
+
 }

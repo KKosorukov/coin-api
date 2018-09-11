@@ -181,7 +181,7 @@ Route::get('/v1/segment/continents', 'API\Segment\SegmentController@getContinent
 
 
 /**
- * @SWG\Get(
+ * @SWG\Post(
  *     path="/api/v1/segment/countries/{continent}",
  *     description="Возвращает список стран для сегментов",
  *     operationId="listCountries",
@@ -191,8 +191,7 @@ Route::get('/v1/segment/continents', 'API\Segment\SegmentController@getContinent
  *       name="continent",
  *       in="query",
  *       type="string",
- *       description="Код континента (например, AS)",
- *       default="available",
+ *       description="Код континента (например, AS). Передача в виде массива.",
  *       required=true
  *     ),
  *     @SWG\Response(
@@ -209,11 +208,11 @@ Route::get('/v1/segment/continents', 'API\Segment\SegmentController@getContinent
  *     )
  * )
  */
-Route::get('/v1/segment/countries/{continent}', 'API\Segment\SegmentController@getCountriesList');
+Route::post('/v1/segment/countries', 'API\Segment\SegmentController@getCountriesList');
 
 /**
- * @SWG\Get(
- *     path="/api/v1/segment/areas/{country}",
+ * @SWG\Post(
+ *     path="/api/v1/segment/areas",
  *     description="Возвращает список областей для сегментов",
  *     operationId="listAreas",
  *     produces={"application/json"},
@@ -222,8 +221,7 @@ Route::get('/v1/segment/countries/{continent}', 'API\Segment\SegmentController@g
  *       name="country",
  *       in="query",
  *       type="string",
- *       description="Код страны (например, RU)",
- *       default="available",
+ *       description="Код страны (например, RU). Передача в виде массива.",
  *       required=true
  *     ),
  *     @SWG\Response(
@@ -236,12 +234,12 @@ Route::get('/v1/segment/countries/{continent}', 'API\Segment\SegmentController@g
  *     )
  * )
  */
-Route::get('/v1/segment/areas/{country}', 'API\Segment\SegmentController@getAreasList');
+Route::post('/v1/segment/areas', 'API\Segment\SegmentController@getAreasList');
 
 
 /**
- * @SWG\Get(
- *     path="/api/v1/segment/cities/{country}/{area}",
+ * @SWG\Post(
+ *     path="/api/v1/segment/cities",
  *     description="Возвращает список населённых пунктов для страны и области",
  *     operationId="listCities",
  *     produces={"application/json"},
@@ -250,16 +248,14 @@ Route::get('/v1/segment/areas/{country}', 'API\Segment\SegmentController@getArea
  *       name="country",
  *       in="query",
  *       type="string",
- *       description="Код страны (например, RU)",
- *       default="available",
+ *       description="Код страны (например, RU). Передача в виде массива.",
  *       required=true
  *     ),
  *     @SWG\Parameter(
  *       name="area",
  *       in="query",
  *       type="string",
- *       description="Код области (опционален)",
- *       default="available"
+ *       description="Код области (опционален). Передача в виде массива. Если областей нет, то передавать пустой массив.",
  *     ),
  *     @SWG\Response(
  *         response=200,
@@ -271,7 +267,7 @@ Route::get('/v1/segment/areas/{country}', 'API\Segment\SegmentController@getArea
  *     )
  * )
  */
-Route::get('/v1/segment/cities/{country}/{area}', 'API\Segment\SegmentController@getCitiesList');
+Route::post('/v1/segment/cities', 'API\Segment\SegmentController@getCitiesList');
 
 
 /**

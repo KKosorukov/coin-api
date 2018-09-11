@@ -181,8 +181,12 @@ Route::get('/api/{version}/{api_key}', 'API\Banner\BannerController@getApi');
 
 Route::get('/testpage', 'Face\IndexController@getTestStaticPage');
 
+Route::get('/testpage-highcharts', 'Face\IndexController@getHighChartsTestPage');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/client-show', 'UI\ClientController@getClientAdv');
+
+Route::get('/client-click/{banner_data}', 'UI\ClientController@putClientClick');

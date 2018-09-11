@@ -12,7 +12,6 @@
  *      in="query",
  *      type="string",
  *      description="Имя. Максимально 50 символов.",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -20,7 +19,6 @@
  *      in="query",
  *      type="string",
  *      description="Фамилия. Максимально 50 символов.",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -28,21 +26,18 @@
  *      in="query",
  *      type="string",
  *      description="Skype ID. Поле необязательное, может быть до 50 символов.",
- *      default="available"
  *   ),
  *   @SWG\Parameter(
  *      name="telegram_id",
  *      in="query",
  *      type="string",
  *      description="Telegram ID. Поле необязательное, может быть до 50 символов.",
- *      default="available"
  *   ),
  *   @SWG\Parameter(
  *      name="email",
  *      in="query",
  *      type="string",
  *      description="Email. Максимально 50 символов.",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -50,7 +45,6 @@
  *      in="query",
  *      type="string",
  *      description="Пароль. 30 символов максимум.",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -58,7 +52,6 @@
  *      in="query",
  *      type="string",
  *      description="Повтор пароля",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -66,7 +59,6 @@
  *      in="query",
  *      type="string",
  *      description="ID секретного вопроса",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
@@ -74,15 +66,20 @@
  *      in="query",
  *      type="string",
  *      description="Ответ на секретный вопрос. От 5 до 255 символов.",
- *      default="available",
  *      required=true
  *   ),
  *   @SWG\Parameter(
  *      name="role",
  *      in="query",
  *      type="integer",
- *      description="Роль пользователя. Может принимать значения, определённые методом /api/v1/role.",
- *      default="available",
+ *      description="Роль пользователя. Может принимать значения, определённые методом /api/v1/role (используется поле slug).",
+ *      required=true
+ *   ),
+ *   @SWG\Parameter(
+ *      name="timezone_id",
+ *      in="query",
+ *      type="integer",
+ *      description="ID часового пояса. Берётся из метода /v1/system/timezones",
  *      required=true
  *   ),
  *   @SWG\Response(
@@ -210,6 +207,13 @@ Route::post('/v1/user/send-activation-email', 'API\User\AccountController@sendAc
  *      description="Telegram ID. Поле необязательное, может быть до 50 символов.",
  *      default="available"
  *     ),
+ *     @SWG\Parameter(
+ *      name="timezone_id",
+ *      in="query",
+ *      type="integer",
+ *      description="ID часового пояса. Берётся из метода /v1/system/timezones",
+ *      required=true
+ *     ),
  *     @SWG\Response(
  *         response=200,
  *         description="Успешное обновление профиля",
@@ -328,3 +332,64 @@ Route::post('/v1/user/password/reset/1', 'API\User\AccountController@resetPasswo
  * )
  */
 Route::post('/v1/user/password/reset/2', 'API\User\AccountController@resetPasswordStepTwo');
+
+/**
+ * @SWG\Post(
+ *     path="/api/v1/user/avatar",
+ *     description="Загрузить аватар к пользователю",
+ *     operationId="uploadAvatar",
+ *     produces={"application/json"},
+ *     tags={"user"},
+ *     @SWG\Parameter(
+ *         name="avatar",
+ *         in="query",
+ *         description="Base64-строка аватара",
+ *         required=true,
+ *         type="integer"
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="Имя файла для аватарки",
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     ),
+ *     @SWG\Response(
+ *         response=403,
+ *         description="Доступ запрещён",
+ *     )
+ * )
+ */
+Route::post('/v1/user/avatar', 'API\User\AccountController@uploadAvatar');
+
+
+/**
+ * @SWG\Post(
+ *     path="/api/v1/user/avatar",
+ *     description="Загрузить аватар к пользователю",
+ *     operationId="uploadAvatar",
+ *     produces={"application/json"},
+ *     tags={"user"},
+ *     @SWG\Parameter(
+ *         name="avatar",
+ *         in="query",
+ *         description="Base64-строка аватара",
+ *         required=true,
+ *         type="integer"
+ *     ),
+ *     @SWG\Response(
+ *         response=200,
+ *         description="Имя файла для аватарки",
+ *     ),
+ *     @SWG\Response(
+ *         response=404,
+ *         description="Ресурс не найден",
+ *     ),
+ *     @SWG\Response(
+ *         response=403,
+ *         description="Доступ запрещён",
+ *     )
+ * )
+ */
+Route::post('/v1/user/avatar', 'API\User\AccountController@uploadAvatar');

@@ -47,5 +47,5 @@ return [
     /*
      * HTTP timeout to be used when såending requests to the Piwik server. Defaults to 5 (seconds)
      */
-    'http_timeout' => 5.0,
+    'http_timeout' => 0,
 ];

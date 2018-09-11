@@ -1,6 +1,4 @@
 <?php
-
-
 Route::apiResource('advs', 'API\Adv\AdvController');
 Route::apiResource('advtypes', 'API\AdvType\AdvController');
 
@@ -36,7 +34,7 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
 
 /**
  * @SWG\Get(
- *     path="/api/v1/user/{user}/adv",
+ *     path="/api/v1/user/{user}/adv/{from?}/{to?}",
  *     description="Возвращает все объявления для конкретного юзера",
  *     operationId="listOfAdvs",
  *     produces={"application/json"},
@@ -47,6 +45,18 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
  *         description="ID пользователя, для которого хотим получить список",
  *         required=true,
  *         type="integer"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="from",
+ *       in="path",
+ *       type="string",
+ *       description="Дата начала для фильтра вывода (формат YYYY-MM-DD)",
+ *     ),
+ *     @SWG\Parameter(
+ *       name="to",
+ *       in="path",
+ *       type="string",
+ *       description="Дата конца для фильтра вывода (формат YYYY-MM-DD)",
  *     ),
  *     @SWG\Response(
  *         response=200,
@@ -63,7 +73,7 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
  * )
  */
 
-Route::get('/v1/user/{user}/adv', 'API\Adv\AdvController@getAllAdvs');
+Route::get('/v1/user/{user}/adv/{from?}/{to?}', 'API\Adv\AdvController@getAllAdvs');
 
 
 /**
@@ -211,11 +221,16 @@ Route::get('/v1/user/{user}/adv/{adv}', 'API\Adv\AdvController@getAdv');
  *       required=true
  *     ),
  *     @SWG\Parameter(
- *       name="text",
+ *       name="long_description",
  *       type="string",
  *       in="query",
- *       description="Текст объявления",
- *       default="available"
+ *       description="Длинный текст объявления"
+ *     ),
+ *      @SWG\Parameter(
+ *       name="short_description",
+ *       type="string",
+ *       in="query",
+ *       description="Короткий текст объявления"
  *     ),
  *     @SWG\Parameter(
  *       name="moderator_comment",
@@ -434,21 +449,26 @@ Route::post('/v1/adv/create', 'API\Adv\AdvController@createAdv');
  *       default="available"
  *     ),
  *     @SWG\Parameter(
- *       name="url",
+ *       name="title",
  *       type="string",
  *       in="query",
  *       description="Заголовок объявления",
  *       default="available"
  *     ),
- *     @SWG\Parameter(
- *       name="text",
+ *    @SWG\Parameter(
+ *       name="long_description",
  *       type="string",
  *       in="query",
- *       description="Текст объявления",
- *       default="available"
+ *       description="Длинный текст объявления"
  *     ),
  *     @SWG\Parameter(
- *       name="text",
+ *       name="short_description",
+ *       type="string",
+ *       in="query",
+ *       description="Короткий текст объявления"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="moderator_comment",
  *       type="string",
  *       in="query",
  *       description="Модераторский комментарий",
@@ -702,3 +722,108 @@ Route::get('/v1/adv/types', 'API\Adv\AdvTypeController@getAllAdvTypes');
 
 Route::post('/v1/adv/clear', 'API\Adv\AdvTypeController@clear');
 
+
+/**
+ * @SWG\Get(
+ *   path="/api/v1/webmaster/list",
+ *   description="Получить список вебмастеров.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="object",
+ *         @SWG\Items(ref="#/definitions/WebmasterResource")
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::get('/v1/adv/list-grouped-by-advertisers', 'API\Adv\AdvController@getAdvGroupListGroupedByAdvertisers');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/allow",
+ *   description="Одобрить все сайты вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/adv/allow', 'API\Adv\AdvController@allow');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/reject",
+ *   description="Отказать всем сайтам вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/adv/reject', 'API\Adv\AdvController@reject');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/webmaster/block",
+ *   description="Заблокировать все сайты вебмастера.",
+ *   operationId="webmasterList",
+ *   produces={"application/json"},
+ *   tags={"webmaster", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/adv/block', 'API\Adv\AdvController@block');

@@ -45,4 +45,14 @@ class Site extends Model
     public function user() {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * Has one matomo row
+     *
+     * @return Relations\HasOne
+     */
+    public function backofficeSite()
+    {
+        return $this->hasOne(\App\Models\Backoffice\Matomo\Site::class, 'idsite', 'id');
+    }
 }

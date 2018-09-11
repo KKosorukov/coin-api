@@ -75,7 +75,6 @@ class SegmentController extends Controller
         if($request->validated()) {
 
             $user = auth()->user();
-
             if($user->hasAccess('segments.create')) {
 
                 $newSegment = Segment::create([
@@ -84,7 +83,7 @@ class SegmentController extends Controller
                     'user_id' => $user->id,
                     'params' => json_encode($request->params),
                     'is_private' => $request->is_private,
-                    'type' => $request->type
+                    'type' => (string)$request->type
                 ]);
 
                 return SegmentResource::make($newSegment);
@@ -188,6 +187,13 @@ class SegmentController extends Controller
             ];
         }
 
+        if(!is_array($request->continent)) {
+            return [
+                'success' => false,
+                'data' => 'Param should be an array!'
+            ];
+        }
+
         $geonamesConnector = new GeonamesConnector();
         return CountryResource::collection($geonamesConnector->getCountries($request->continent));
     }
@@ -203,6 +209,13 @@ class SegmentController extends Controller
             ];
         }
 
+        if(!is_array($request->country)) {
+            return [
+                'success' => false,
+                'data' => 'Param should be an array!'
+            ];
+        }
+
         $geonamesConnector = new GeonamesConnector();
         return AreaResource::collection($geonamesConnector->getAreas($request->country));
     }
@@ -215,6 +228,14 @@ class SegmentController extends Controller
             return [
                 'success' => false,
                 'data' => 'Not enough params: you need to pass country and area params'
+            ];
+        }
+
+
+        if(!is_array($request->country) || !is_array($request->area)) {
+            return [
+                'success' => false,
+                'data' => 'Param should be an array!'
             ];
         }
 
