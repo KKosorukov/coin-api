@@ -21,6 +21,8 @@ use Mockery\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Requests\GetByPeriod;
 
+use Carbon\Carbon;
+
 class AdvController extends Controller
 {
     public function __construct()
@@ -67,8 +69,23 @@ class AdvController extends Controller
             }
         }
 
+        if(!isset($request->limit) || !$request->limit) {
+            $limit = 30;
+        } else {
+            $limit = $request->limit;
+        }
+
+        if(!isset($request->offset) || !$request->offset) {
+            $offset = 0;
+        } else {
+            $offset = $request->offset;
+        }
+
         $advs = Adv::where('created_at', '>=', $from)
             ->where('created_at', '<=', $to)
+            ->limit($limit)
+            ->offset($offset)
+            ->where('user_id', '=', auth()->user()->id)
             ->get()
             ->reverse();
 
@@ -143,10 +160,12 @@ class AdvController extends Controller
      */
     public function getAdv($adv)
     {
-        return new AdvResource(Adv::where([
+        $advs = Adv::where([
             'id' => $adv,
             'user_id' => auth()->user()->id
-        ])->first());
+        ])->get();
+
+        return count($advs) > 0 ? new AdvResource($advs[0]) : [];
     }
 
     /**

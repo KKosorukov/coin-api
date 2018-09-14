@@ -16,6 +16,8 @@ use App\Models\Backoffice\Campaign;
 use App\Models\Backoffice\Project;
 use App\Models\Backoffice\SecretQuestion;
 use App\Models\Backoffice\Role;
+use App\Models\Backoffice\Site;
+use Carbon\Carbon;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -103,7 +105,7 @@ class AccountController extends Controller
     public function createAccount(UserRegistration $request) {
         if ($request->validated()) {
 
-            $newUser = Sentinel::register([
+            $newUser = Sentinel::registerAndActivate([
                 'email' => $request->email,
                 'password' => $request->password
             ]);
@@ -141,11 +143,18 @@ class AccountController extends Controller
             // Create bill of user
             $billModel = $this->_createBillOnUser($userModel);
 
-            // Create first campaign in project
-            $this->_createFirstCampaign($projectModel);
+            if($request->role == 'managers') {
+                // Create first campaign in project
+                // $this->_createFirstCampaign($projectModel);
+            }
+            if($request->role == 'webmasters') {
+                // Create first site in project
+                // $this->_createFirstWebsite($projectModel);
+            }
 
             // Send email after creating. For activation.
-            if($notifier = $this->_sendActivationMail($userModel, $activationObj)) {
+            // @TODO Mailgun is disabled
+            /* if($notifier = $this->_sendActivationMail($userModel, $activationObj)) {
                 $answer = [
                     'success' => true
                 ];
@@ -153,14 +162,26 @@ class AccountController extends Controller
                 $answer = [
                     'success' => false
                 ];
+            } */
+
+            // Auto-login after registration: return JWT token
+            if (!$token = auth()->tokenById($userModel->id)) {
+                return response()->json([
+                    'error' => 'Unauthorized'
+                ], 401);
             }
+
+            $answer = [
+                'success' => true
+            ];
 
             return $answer + [
                 'data' => UserResource::make($userModel),
+                'token' => $token,
                 'messages' => [
-                    'errors' => $notifier->flush('error'),
-                    'notices' => $notifier->flush('notice'),
-                    'successes' => $notifier->flush('success')
+                   // 'errors' => $notifier->flush('error'),
+                   // 'notices' => $notifier->flush('notice'),
+                   // 'successes' => $notifier->flush('success')
                 ]
             ];
         }
@@ -175,7 +196,7 @@ class AccountController extends Controller
     private function _createBillOnUser($userModel) {
         $billModel = new Bill;
         $billModel->user_id = $userModel->id;
-        $billModel->num_tokens = 0;
+        $billModel->num_tokens = 500;
 
         return $billModel->save();
     }
@@ -203,12 +224,54 @@ class AccountController extends Controller
         return $defaultProjectModel;
     }
 
-
+    /**
+     * Create first campaign for adv manager
+     *
+     * @param $projectModel
+     * @return Campaign
+     */
     private function _createFirstCampaign($projectModel) {
         $defaultCampaignModel = new Campaign;
         $defaultCampaignModel->fill([
-
+            'name' => 'Demo campaign for user #'.$projectModel->user_id,
+            'user_id' => $projectModel->user_id,
+            'date_from' => Carbon::now(),
+            'date_to' => Carbon::now()->subDays(-30),
+            'comment' => 'My first beautiful campaign in this life',
+            'status_global' => '0',
+            'status_moderation' => '0',
+            'daily_budget' => 0,
+            'budget' => 0,
+            'project_id' => $projectModel->id,
+            'current_daily_budget' => 0,
+            'current_budget' => 0,
+            'showcase_status' => 0,
+            'num_shows' => 0,
+            'num_clicks' => 0,
         ]);
+
+        $defaultCampaignModel->save();
+
+        return $defaultCampaignModel;
+    }
+
+    /**
+     * Create first website for webmaster
+     *
+     * @param $projectModel
+     */
+    private function _createFirstWebsite($projectModel) {
+        $defaultSite = new Site;
+        $defaultSite->fill([
+            'name' => 'Demo.ru',
+            'status' => '0',
+            'clicks' => 865,
+            'views' => 452365
+        ]);
+
+        $defaultSite->save();
+
+        return $defaultSite;
     }
 
     /**

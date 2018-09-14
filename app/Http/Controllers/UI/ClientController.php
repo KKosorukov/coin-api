@@ -26,7 +26,6 @@ use App\Models\UI\Campaign as UICampaign;
 use App\Models\UI\Adv as UIAdv;
 use App\Models\UI\AdvGroup as UIAdvGroup;
 
-
 class ClientController extends Controller
 {
     public function __construct()
@@ -46,8 +45,8 @@ class ClientController extends Controller
     public function getClientAdv(ClientRequest $request) {
         if($request->validated()) {
 
-            // Put +1 show into UI-database
-            $this->_putShow($request);
+            // Put +1 show to site into UI-database
+            $this->_putSiteShow($request);
 
 
             return [
@@ -57,7 +56,12 @@ class ClientController extends Controller
         }
     }
 
-
+    /**
+     * Put client click on the banner
+     *
+     * @param Request $request
+     * @return array
+     */
     public function putClientClick(Request $request) {
         /**
          * @TODO Here must be special request type for checking, is the banner correct or not. Decrypting can be incorrect, you now.
@@ -103,9 +107,29 @@ class ClientController extends Controller
         $uiCampaign->num_clicks++;
         $uiCampaign->save();
 
+        /**
+         * Site side
+         */
+        $this->_putSiteClick($request);
+
         return [
           'success' => true
         ];
+    }
+
+    /**
+     * Put site click to database
+     *
+     * @param $request
+     */
+    private function _putSiteClick($request) {
+
+        $host = $this->_getCurrentSite($request);
+
+        if($host) {
+            $host->num_clicks++;
+            $host->save();
+        }
     }
 
     /**
@@ -119,13 +143,25 @@ class ClientController extends Controller
     }
 
     /**
-     * Put show into database
+     * Get current site
+     *
+     * @param Request $request
      */
-    private function _putShow($request) {
+    private function _getCurrentSite(Request $request) {
         $ip = $request->server('REMOTE_ADDR');
         $host = UISite::where([
             'host' => $ip
         ])->first();
+
+        return $host;
+    }
+
+    /**
+     * Put site show into database
+     */
+    private function _putSiteShow($request) {
+
+        $host = $this->_getCurrentSite($request);
 
         if($host) {
             $host->num_shows++;

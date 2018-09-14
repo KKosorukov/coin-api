@@ -2,7 +2,7 @@
 
 /**
  * @SWG\Get(
- *     path="/api/v1/advgroup/{from?}/{to?}",
+ *     path="/api/v1/advgroup",
  *     description="Возвращает коллекцию групп объявлений",
  *     operationId="getAdvgroups",
  *     produces={"application/json"},
@@ -18,6 +18,18 @@
  *       in="path",
  *       type="string",
  *       description="Дата конца для фильтра вывода (формат YYYY-MM-DD)",
+ *     ),
+ *     @SWG\Parameter(
+ *       name="limit",
+ *       in="query",
+ *       type="integer",
+ *       description="Количество строк"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="offset",
+ *       in="query",
+ *       type="integer",
+ *       description="Начиная с какой строки выводить"
  *     ),
  *     @SWG\Response(
  *         response=200,
@@ -35,7 +47,7 @@
  */
 
 
-Route::get('/v1/advgroup/{from?}/{to?}', 'API\Adv\AdvGroupController@getAllAdvGroups');
+Route::get('/v1/advgroup', 'API\Adv\AdvGroupController@getAllAdvGroups');
 
 
 /**

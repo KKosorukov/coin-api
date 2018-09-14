@@ -34,7 +34,7 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
 
 /**
  * @SWG\Get(
- *     path="/api/v1/user/{user}/adv/{from?}/{to?}",
+ *     path="/api/v1/user/{user}/adv",
  *     description="Возвращает все объявления для конкретного юзера",
  *     operationId="listOfAdvs",
  *     produces={"application/json"},
@@ -48,15 +48,27 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
  *     ),
  *     @SWG\Parameter(
  *       name="from",
- *       in="path",
+ *       in="query",
  *       type="string",
  *       description="Дата начала для фильтра вывода (формат YYYY-MM-DD)",
  *     ),
  *     @SWG\Parameter(
  *       name="to",
- *       in="path",
+ *       in="query",
  *       type="string",
  *       description="Дата конца для фильтра вывода (формат YYYY-MM-DD)",
+ *     ),
+ *     @SWG\Parameter(
+ *       name="limit",
+ *       in="query",
+ *       type="integer",
+ *       description="Количество строк"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="offset",
+ *       in="query",
+ *       type="integer",
+ *       description="Начиная с какой строки выводить"
  *     ),
  *     @SWG\Response(
  *         response=200,
@@ -73,7 +85,7 @@ Route::get('/v1/user/{user}/adv/default', 'API\Adv\AdvController@getDefaultAdv')
  * )
  */
 
-Route::get('/v1/user/{user}/adv/{from?}/{to?}', 'API\Adv\AdvController@getAllAdvs');
+Route::get('/v1/user/{user}/adv', 'API\Adv\AdvController@getAllAdvs');
 
 
 /**

@@ -15,6 +15,7 @@ use App\Models\UI\Adv as UIAdv;
 use App\Models\UI\AdvGroup as UIAdvGroup;
 use App\Models\UI\Campaign as UICampaign;
 use App\Models\UI\Project as UIProject;
+use App\Models\UI\Site as UISite;
 
 use Illuminate\Support\Carbon;
 
@@ -24,6 +25,7 @@ class Budgetor extends Component {
     protected $advGroup = null;
     protected $campaign = null;
     protected $project = null;
+    protected $site = null;
 
     public function __construct() {
 
@@ -71,6 +73,14 @@ class Budgetor extends Component {
     }
 
     /**
+     * Set site for recalc
+     */
+    public function setSite(UISite $site) {
+        $this->site = $site;
+        return $this;
+    }
+
+    /**
      * Recalc all sides of showed
      */
     public function recalc() {
@@ -79,6 +89,7 @@ class Budgetor extends Component {
         $this->_recalcAdvGroup();
         $this->_recalcCampaign();
         $this->_recalcProject();
+        $this->_recalcSite();
     }
 
     /**

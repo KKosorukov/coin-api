@@ -5,7 +5,7 @@
             <span class="long-text">{{ $banner->adv_long_desc }}</span>
             <span class="short-text">{{ $banner->adv_short_desc }}</span>
         </div>
-        <a href='#' class="button" onclick="location.href = '@php echo $banner->adv_url; @endphp';" data-track-content data-content-name="id-{{ $bannerId }}">@php echo substr($banner->adv_url, 0, 30).'...'; @endphp</a>
+        <a href='#' class="button" onclick="location.href = '{{ $banner->adv_url }}';" data-track-content data-content-name="id-{{ $bannerId }}">@php echo substr($banner->adv_url, 0, 30).'...'; @endphp</a>
     </div>
     <div class="hover">
         <div class="description">
@@ -24,7 +24,7 @@
                     <a href="{{ $banner->additional_adv_url_4 }}" target="_blank">{{ $banner->additional_adv_url_desc_4 }}</a>
                 </div>
             </div>
-            <a href='#' class="button" onclick="location.href = '@php echo $banner->adv_url; @endphp';" data-track-content data-content-name="id-{{ $bannerId }}">@php echo substr($banner->adv_url, 0, 30).'...'; @endphp</a>
+            <a href='#' class="button" onclick="location.href = '{{ $banner->adv_url }}';" data-track-content data-content-name="id-{{ $bannerId }}">@php echo substr($banner->adv_url, 0, 30).'...'; @endphp</a>
         </div>
     </div>
 </div>

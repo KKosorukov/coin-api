@@ -161,10 +161,10 @@ class Auctioner extends Component {
             ->where('t4.status_global', '=', '0') // Campaign must be enabled
             ->whereExists(function($query) {
                 $query->select([
-                    't4.*'
+                    't5.*'
                 ])
-                ->from((new Banner)->getTable().' AS t4')
-                ->whereRaw('t4.adv_id = t1.id');
+                ->from((new Banner)->getTable().' AS t5')
+                ->whereRaw('t5.adv_id = t1.id');
             })
             ->get();
     }
@@ -195,6 +195,7 @@ class Auctioner extends Component {
                 't2.short_description AS adv_text_short',
                 't2.long_description AS adv_text_long',
                 't2.url AS adv_url',
+                't2.status_moderation AS status_moderation_adv',
                 't3.*',
                 't3.id AS advgroup_id',
                 't3.budget AS advgroup_budget',
@@ -238,7 +239,8 @@ class Auctioner extends Component {
             ->where('t6.status', '=', '0') // Project must be enabled
             ->where('t5.status_global', '=', '0') // Campaign must be enabled
             ->where('t3.status', '=', '0') // Adv group must be enabled
-            ->where('t2.status_global', '=', '0'); // Adv must be enabled */
+            ->where('t2.status_global', '=', '0') // Adv must be enabled */
+            ->where('t2.status_moderation', '=', Adv::STATUS_MODERATION_ACTIVE); // Adv must be moderated
 
         if(count($advIds) > 0) {
             $bannerQuery->whereIn('t2.id', $advIds);
@@ -346,11 +348,12 @@ class Auctioner extends Component {
 
 
     /**
+     * Calc showcase / auction
+     *
      * @return bool
      */
     private function _calcShowcase() {
         $advs = $this->_getAdvsForMovingToShowcase();
-        $numAdvs = count($advs);
 
         $calced = [];
         foreach ($advs as $adv) {
@@ -560,7 +563,8 @@ class Auctioner extends Component {
             'is_banner' => $siteFromDb->is_banner,
             'is_video' => $siteFromDb->is_video,
             'balance' => $siteFromDb->balance,
-            'status' => $siteFromDb->status
+            'status' => $siteFromDb->status,
+            'real_id' => $siteFromDb->id
         ]);
     }
 
@@ -640,11 +644,39 @@ class Auctioner extends Component {
      * Suck all data into backoffice
      */
     public function suckIntoBackoffice() {
+        /**
+         * Adv manager's side
+         */
         $this->_suckBannersIntoBackoffice();
         $this->_suckAdvsIntoBackoffice();
         $this->_suckCampaignsIntoBackoffice();
         $this->_suckProjectsIntoBackoffice();
         $this->_suckAdvGroupsIntoBackoffice();
+        /**
+         * Webmaster's side
+         */
+        $this->_suckWebsitesIntoBackoffice();
+    }
+
+    /**
+     * Suck websites into backoffice-db
+     *
+     * @return bool|void
+     */
+    private function _suckWebsitesIntoBackoffice() {
+        $suckedInWebsites = $this->_getWebsitesForMovingToBackoffice();
+        $numWebsites = count($suckedInWebsites);
+        if($numWebsites > 0) {
+            for ($i = 0; $i < $numWebsites; $i++) {
+                $this->_updateBackofficeWebsitesData($suckedInWebsites[$i]);
+            }
+
+            echo "Success! ".$numWebsites." websites were updated to backoffice-database\r\n";
+            return;
+        }
+
+        echo "No websites rows for sucking into backoffice-database\r\n";
+        return true;
     }
 
     /**
@@ -991,6 +1023,37 @@ class Auctioner extends Component {
         $backofficeBanner = Banner::find($bannerFromUI->banner_id);
         if($backofficeBanner) {
             // @TODO Here is a stat from UI
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get websites for moving to backoffice, from showcase
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function _getWebsitesForMovingToBackoffice() {
+        return DB::connection('mysql-ui')->table((new UISite)->getTable().' AS t1')
+            ->select([
+                't1.*',
+            ])
+            ->get();
+    }
+
+    /**
+     * Move website stat from UI to backoffice
+     *
+     * @param $bannerFromUI
+     */
+    private function _updateBackofficeWebsitesData($websiteFromUI) {
+        $backofficeWebsite = Campaign::find($websiteFromUI->real_id);
+        if($backofficeWebsite) {
+            $backofficeWebsite->balance = $websiteFromUI->balance;
+            $backofficeWebsite->num_clicks = $websiteFromUI->num_clicks;
+            $backofficeWebsite->num_shows = $websiteFromUI->num_shows;
+            $backofficeWebsite->save();
             return true;
         }
 

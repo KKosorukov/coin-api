@@ -18,7 +18,9 @@ class Site extends Model
         'balance',
         'status',
         'host',
-        'num_shows'
+        'num_shows',
+        'num_clicks',
+        'real_id'
     ];
 
     protected $hidden = ['id'];

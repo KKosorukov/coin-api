@@ -25,7 +25,7 @@ class ChangeBillsFloatToInt extends Migration
      */
     private function _updateData() {
         $bills = \App\Models\Backoffice\Bill::all();
-        foreach($bills as $bill) {
+        foreach ($bills as $bill) {
             $bill->num_tokens = $bill->num_tokens['ADT'] * 100;
             $bill->save();
         }

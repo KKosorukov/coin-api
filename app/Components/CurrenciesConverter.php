@@ -19,7 +19,7 @@ use App\Components\Component;
  */
 
 class CurrenciesConverter extends Component {
-    const USD_TO_ADT = 10000; // Curse of USD / ADT
+    const USD_TO_ADT = 1; // Curse of USD / ADT
 
     public function __construct()
     {
@@ -32,19 +32,19 @@ class CurrenciesConverter extends Component {
      * @param $value
      */
     public function convertAdt($value, $testMode = true) {
-        if(!$testMode) {
+        if (!$testMode) {
             return [
-                'ADT' => $value,
-                'USD' => 1,
-                'USD/ADT' => self::USD_TO_ADT / $value,
+                'ADT'     => $value,
+                'USD'     => $value / self::USD_TO_ADT,
+                'USD/ADT' => self::USD_TO_ADT,
                 'EUR/USD' => round((float)Swap::latest('EUR/USD')->getValue(), 2),
                 'BTC/USD' => round((float)Swap::latest('BTC/USD')->getValue(), 2),
             ];
         } else {
             return [
-                'ADT' => $value,
-                'USD' => 1,
-                'USD/ADT' => self::USD_TO_ADT / $value,
+                'ADT'     => $value,
+                'USD'     => $value / self::USD_TO_ADT,
+                'USD/ADT' => self::USD_TO_ADT,
                 'EUR/USD' => 1.25,
                 'BTC/USD' => 6756.73,
             ];

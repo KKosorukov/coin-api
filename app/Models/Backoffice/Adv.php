@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adv extends Model
 {
-    const STATUS_MODERATION_ACTIVE     = 1;
-    const STATUS_MODERATION_MODERATION = 2;
-    const STATUS_MODERATION_REJECTED   = 3;
-    const STATUS_MODERATION_BLOCKED    = 4;
+    const STATUS_MODERATION_ACTIVE     = '0';
+    const STATUS_MODERATION_MODERATION = '1';
+    const STATUS_MODERATION_REJECTED   = '2';
+    const STATUS_MODERATION_BLOCKED    = '3';
 
     protected $connection = 'mysql-backoffice';
 

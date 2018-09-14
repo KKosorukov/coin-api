@@ -25,7 +25,6 @@
  *   )
  * )
  */
-
 Route::get('/v1/manager/list', 'API\User\ManagerController@list');
 
 /**
@@ -52,7 +51,6 @@ Route::get('/v1/manager/list', 'API\User\ManagerController@list');
  *   )
  * )
  */
-
 Route::post('/v1/manager/allow', 'API\User\ManagerController@allow');
 
 /**
@@ -79,7 +77,6 @@ Route::post('/v1/manager/allow', 'API\User\ManagerController@allow');
  *   )
  * )
  */
-
 Route::post('/v1/manager/reject', 'API\User\ManagerController@reject');
 
 /**
@@ -106,7 +103,6 @@ Route::post('/v1/manager/reject', 'API\User\ManagerController@reject');
  *   )
  * )
  */
-
 Route::post('/v1/manager/block', 'API\User\ManagerController@block');
 
 /**
@@ -134,5 +130,30 @@ Route::post('/v1/manager/block', 'API\User\ManagerController@block');
  *   )
  * )
  */
-
 Route::get('/v1/manager/{id}', 'API\User\ManagerController@get');
+
+/**
+ * @SWG\Post(
+ *   path="/api/v1/manager/add-tokens",
+ *   description="Добавляет токенов пользователю.",
+ *   operationId="managerAddTokens",
+ *   produces={"application/json"},
+ *   tags={"manager", "admin"},
+ *   @SWG\Response(
+ *      response=200,
+ *      description="",
+ *      @SWG\Schema(
+ *         type="json",
+ *      )
+ *   ),
+ *   @SWG\Response(
+ *      response=404,
+ *      description="Ресурс не найден",
+ *   ),
+ *   @SWG\Response(
+ *      response=403,
+ *      description="Доступ запрещён",
+ *   )
+ * )
+ */
+Route::post('/v1/manager/add-tokens', 'API\User\ManagerController@addTokens');

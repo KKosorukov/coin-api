@@ -228,12 +228,6 @@ use App\Models\Backoffice\Banner;
  *      format="float"
  *   ),
  *   @SWG\Property(
- *      property="clicks",
- *      type="numeric",
- *      description="Количество кликов",
- *      format="float"
- *   ),
- *   @SWG\Property(
  *      property="quality",
  *      type="numeric",
  *      description="Показатель качества",

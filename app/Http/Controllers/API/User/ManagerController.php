@@ -16,7 +16,7 @@ class ManagerController extends Controller
     public function __construct()
     {
         $this->middleware([
-//            'auth:api',
+            'auth:api',
             \Barryvdh\Cors\HandleCors::class,
         ]);
     }
@@ -45,53 +45,23 @@ class ManagerController extends Controller
     }
 
     /**
-     * @param Requests\UpdateSiteStatus $request
+     * @param Requests\AddTokens $request
      * @return array
      */
-    public function allow(Requests\UpdateSiteStatus $request) : array
+    public function addTokens(Requests\AddTokens $request) : array
     {
-        // make site allow
-        $sitesUpdated = Models\Backoffice\Site::whereIn('id', $request->ids)
-            ->update(['status' => \App\Models\Backoffice\Site::STATUS_ACTIVE]);
+        $bill = Models\Backoffice\Bill::firstOrNew(['user_id' => $request->user_id]);
 
-        $interests = [];
+        if (is_array($bill->num_tokens)) {
+            $bill->num_tokens = $bill->num_tokens['ADT'] + $request->tokens_count;
+        } else {
+            $bill->num_tokens = $request->tokens_count;
+        }
+
+        $success = $bill->save();
 
         return [
-            'success' => $sitesUpdated
-        ];
-    }
-
-    /**
-     * @param Requests\UpdateSiteStatus $request
-     * @return array
-     */
-    public function reject(Requests\UpdateSiteStatus $request) : array
-    {
-        // make site reject
-        $sitesUpdated = Models\Backoffice\Site::whereIn('id', $request->ids)
-            ->update(['status' => Models\Backoffice\Site::STATUS_REJECTED]);
-
-        $reason = [];
-
-        return [
-            'success' => $sitesUpdated
-        ];
-    }
-
-    /**
-     * @param Requests\UpdateSiteStatus $request
-     * @return array
-     */
-    public function block(Requests\UpdateSiteStatus $request) : array
-    {
-        // make site blocked
-        $sitesUpdated = Models\Backoffice\Site::whereIn('id', $request->ids)
-            ->update(['status' => Models\Backoffice\Site::STATUS_BLOCKED]);
-
-        $reason = [];
-
-        return [
-            'success' => $sitesUpdated
+            'success' => $success
         ];
     }
 }

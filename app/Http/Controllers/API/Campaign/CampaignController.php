@@ -18,7 +18,7 @@ use App\Http\Requests\CreateCampaign;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 use DB;
 
@@ -66,8 +66,24 @@ class CampaignController extends Controller
             }
         }
 
+
+        if(!isset($request->limit) || !$request->limit) {
+            $limit = 30;
+        } else {
+            $limit = $request->limit;
+        }
+
+        if(!isset($request->offset) || !$request->offset) {
+            $offset = 0;
+        } else {
+            $offset = $request->offset;
+        }
+
         $campaigns = Campaign::where('created_at', '>=', $from)
             ->where('created_at', '<=', $to)
+            ->where('user_id', '=', auth()->user()->id)
+            ->limit($limit)
+            ->offset($offset)
             ->get()
             ->reverse();
 
@@ -114,8 +130,7 @@ class CampaignController extends Controller
     public function getCampaign($campaign)
     {
         $campaign = Campaign::where([
-            'id' => $campaign,
-            'user_id' => auth()->user()->id
+            'id' => $campaign
         ])->first();
 
         return $campaign ? new CampaignResource($campaign) : [];

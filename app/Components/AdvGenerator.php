@@ -167,8 +167,29 @@ class AdvGenerator extends Component {
             $counterLimit = $this->numBanners ? $this->numBanners : $this->maxBanners;
 
             for ($i = 0; $i < $counterLimit; $i++) {
-                $randIndex = floor($generator->getRandomFloat() * $limit);
-                $banners[$i] = $queryResult[$randIndex];
+                $randFloat = $generator->getRandomFloat() * $limit;
+                $choosedBannerId = null;
+                foreach ($intervals as $interval) {
+                    if($interval['from'] <= $randFloat && $interval['to'] >= $randFloat) {
+                        $choosedBannerId = $interval['id'];
+                        break;
+                    }
+                }
+
+                /**
+                 * For the save way... In the name of the god
+                 */
+                if($choosedBannerId) {
+                    foreach ($queryResult as $element) {
+                        if($element->id == $choosedBannerId) {
+                            $banners[$i] = $element;
+                            break;
+                        }
+                    }
+                } else {
+                    $banners[$i] = $queryResult[0]; // @TODO Refactor this shitty part
+                }
+
             }
         }
 

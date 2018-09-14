@@ -2,7 +2,7 @@
 
 /**
  * @SWG\Get(
- *     path="/api/v1/campaign/{from?}/{to?}",
+ *     path="/api/v1/campaign",
  *     description="Возвращает коллекцию кампаний для пользователя",
  *     operationId="getCampaigns",
  *     produces={"application/json"},
@@ -19,6 +19,18 @@
  *       type="string",
  *       description="Дата конца для фильтра вывода (формат YYYY-MM-DD)",
  *     ),
+ *     @SWG\Parameter(
+ *       name="limit",
+ *       in="query",
+ *       type="integer",
+ *       description="Количество строк"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="offset",
+ *       in="query",
+ *       type="integer",
+ *       description="Начиная с какой строки выводить"
+ *     ),
  *     @SWG\Response(
  *         response=200,
  *         description="JSON с данными по кампаниям",
@@ -34,7 +46,7 @@
  * )
  */
 
-Route::get('/v1/campaign/{from?}/{to?}', 'API\Campaign\CampaignController@getAllCampaigns');
+Route::get('/v1/campaign', 'API\Campaign\CampaignController@getAllCampaigns');
 
 
 /**
